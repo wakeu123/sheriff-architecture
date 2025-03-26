@@ -3,6 +3,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@domains/shared/*": ["src/domains/shared/*"],
+      "@domains/products/*": ["src/domains/products/*"],
+      "@domains/categories/*": ["src/domains/categories/*"],
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
