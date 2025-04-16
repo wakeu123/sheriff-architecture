@@ -5,11 +5,9 @@ import { ProductService } from '@domains/products/data/services/product.service'
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [
-    ProductComponent
-  ],
+  imports: [ProductComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
-  providers: [ProductService]
+  providers: [ProductService],
 })
 export class ProductListComponent {}

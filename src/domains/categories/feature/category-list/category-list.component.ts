@@ -1,14 +1,12 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { CategoryComponent } from '@domains/categories/ui/category.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [
-    CategoryComponent
-  ],
+  imports: [CategoryComponent],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
-  providers: []
+  providers: [],
 })
-export class CategoryListComponent { }
+export class CategoryListComponent {}

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-category',
@@ -6,4 +6,4 @@ import {Component} from '@angular/core';
   styleUrl: './category.component.css',
   templateUrl: './category.component.html',
 })
-export class CategoryComponent { }
+export class CategoryComponent {}
