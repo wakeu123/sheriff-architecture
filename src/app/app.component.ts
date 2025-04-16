@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  //pm i @ngspot/ngx-errors très important pour gérer les erreurs des formulaires
   title = 'sheriff-architecture';
 }
