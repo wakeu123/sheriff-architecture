@@ -10,4 +10,6 @@ import { ProductService } from '@domains/products/data/services/product.service'
   styleUrl: './product-list.component.css',
   providers: [ProductService],
 })
-export class ProductListComponent {}
+export class ProductListComponent {
+
+}
