@@ -11,8 +11,10 @@ import { Component, OnInit } from "@angular/core";
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
+        <div class="dot"></div>
       </div>
       <div class="container">
+        <div class="shadow"></div>
         <div class="shadow"></div>
         <div class="shadow"></div>
         <div class="shadow"></div>
