@@ -1,7 +1,7 @@
 // @ts-check
 const eslint = require("@eslint/js");
-const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
+const tseslint = require("typescript-eslint");
 const sheriff = require('@softarc/eslint-plugin-sheriff');
 
 module.exports = tseslint.config(

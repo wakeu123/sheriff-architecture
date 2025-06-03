@@ -15,7 +15,9 @@ export const config: SheriffConfig = {
   depRules: {
     // root is a virtual module, which contains all files not being part
     // of any module, e.g. application shell, main.ts, etc.
-    'domain:*': [sameTag],
+    'domain:*': [sameTag, 'domain:shared'],
+    'type:feature': ['type:ui', 'type:data', 'type:directives'],
+    'type:directives': ['type:utils'],
     'root': ['domain:*', 'noTag'],
     // add your dependency rules here
   },
