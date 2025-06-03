@@ -17,7 +17,6 @@ export const config: SheriffConfig = {
     // of any module, e.g. application shell, main.ts, etc.
     'domain:*': [sameTag],
     'root': ['domain:*', 'noTag'],
-    'noTag': 'noTag',
     // add your dependency rules here
   },
 };
