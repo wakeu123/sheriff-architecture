@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
-    //importProvidersFrom([ButtonModule]),
+    //importProvidersFrom([PanelComponent]),
     providePrimeNG({
       ripple: true,
       theme: {

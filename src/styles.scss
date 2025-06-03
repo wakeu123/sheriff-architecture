@@ -1,7 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use "tailwindcss";
+
 *{
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Montserrat/static/Montserrat-Regular.ttf") format('truetype');
 }

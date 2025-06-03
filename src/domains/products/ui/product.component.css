@@ -1,0 +1,72 @@
+
+label{
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+textarea{
+  height: 50px;
+  resize: none;
+}
+
+.form-field-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-label {
+min-width: 85px;
+}
+
+.form-control {
+flex-grow: 1;
+}
+
+
+.ml {
+  margin-left: 90px;
+}
+
+.align-form {
+  width: 100%;
+}
+
+.form-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-row {
+  width: 100%;
+  flex: 1;
+  margin: 0px;
+}
+
+.form-field-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-label {
+  min-width: 119px;
+}
+
+.form-control {
+  flex-grow: 1;
+}
+
+.date-box {
+  border: grey solid 1px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+
+.p-datepicker {
+  z-index: 10000 !important;
+}
