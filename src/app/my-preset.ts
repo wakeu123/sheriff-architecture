@@ -4,6 +4,7 @@ import Aura from '@primeng/themes/aura';
 
 export const MyPreset = definePreset(Aura, {
     //Your customizations, see the following sections for examples
+
     semantic: {
         primary: {
             50: '{orange.50}',
@@ -11,7 +12,7 @@ export const MyPreset = definePreset(Aura, {
             200: '{orange.200}',
             300: '{orange.300}',
             400: '{orange.400}',
-            500: '{orange.500}',
+            500: 'var(--p-gray-400)',
             600: '{orange.600}',
             700: '{orange.700}',
             800: '{orange.800}',

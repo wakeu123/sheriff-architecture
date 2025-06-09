@@ -18,6 +18,7 @@
                   id="reference"
                   name="reference"
                   class="w-full"
+
                 />
               </div>
           </div>
@@ -60,14 +61,13 @@
         <div class="div-row">
           <div class="flex flex-row mb-3">
             <div class="flex flex-row gap-2 w-full">
-              <label for="nature">Nature: </label>
+              <label for="nature" class="w-64">Nature: </label>
               <select
                 pInputText
                 formControlName="natureCourrier"
                 id="nature"
                 name="nature"
                 class="emphase w-full"
-                required
               >
                 <option value="" selected>Aucune sélection</option>
                 <option value="NORMALE">NORMALE</option>
@@ -78,7 +78,7 @@
 
           <div class="flex flex-row mb-3">
             <div class="flex flex-row gap-2 w-full">
-              <label for="priorite">Priorité: </label>
+              <label for="priorite" class="w-64">Priorité: </label>
               <select
                 pInputText
                 formControlName="prioriteCourrier"
@@ -96,7 +96,7 @@
 
           <div class="flex flex-row mb-3">
             <div class="flex flex-row gap-2 w-full">
-              <label for="etat">Etat: </label>
+              <label for="etat" class="w-64">Etat: </label>
               <select
                 pInputText
                 formControlName="etatCourrier"
@@ -109,6 +109,18 @@
                 <option value="ENREGISTRE">ENREGISTRE</option>
                 <option value="DISTRIBUE">CLASSE</option>
               </select>
+            </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="etat" class="w-64">City: </label>
+              <p-select [options]="cities()"
+              formControlName="city"
+              appendTo="body"
+              optionLabel="name"
+              placeholder="Select a City"
+              class="emphase w-full" />
             </div>
           </div>
 
@@ -153,8 +165,10 @@
       </div>
     </app-colored-panel>
   </form>
-  <hr>
-  <p-button label="Cancel" (onClick)="onCancel()" />
+  <div class="flex justify-end gap-2 mt-1">
+    <p-button label="Cancel" (onClick)="onCancel()" />
+    <p-button label="Enregistrer" (onClick)="onSave()" />
+  </div>
 </div>
 
 
