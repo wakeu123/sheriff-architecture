@@ -6,7 +6,7 @@ import { ProductListComponent } from "../domains/products/feature/product-list/p
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, DatePipe, ProductListComponent],
+  imports: [ButtonModule, ProductListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
