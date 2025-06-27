@@ -2,5 +2,10 @@
 
 <!-- <app-product [isAvailable]="true" [nbeDraf]="12" /> -->
 
-<p-toast />
-<p-button label="Show modal" (onClick)="onShowModal()" />
+<div class="d-flex gap-5">
+  <p-button label="Show modal" (onClick)="onShowModal()" />
+  <p-button label="Show notification" (onClick)="showNotification()" />
+</div>
+
+<router-outlet />
+

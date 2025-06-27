@@ -6,8 +6,9 @@ import { DynamicDialogConfig, DynamicDialogRef, } from 'primeng/dynamicdialog';
 import { ProductFormType } from '../data/models/product-form-type';
 import { PanelComponent } from "../../shared/components/panel/panel.component";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { booleanAttribute, Component, inject, input, OnInit, signal } from '@angular/core';
+import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { City } from '../data/models/city-model';
+import { FormComponent } from '@domains/shared/guards/un-saved-change.guard';
 
 @Component({
   selector: 'app-product',
@@ -22,7 +23,11 @@ import { City } from '../data/models/city-model';
   templateUrl: './product.component.html',
   providers: []
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy, FormComponent {
+
+  hasUnsavedChanges(): boolean {
+    return true;
+  }
 
   private readonly dialogRef = inject(DynamicDialogRef);
   private readonly dialogDataConfig = inject(DynamicDialogConfig);
@@ -69,6 +74,10 @@ export class ProductComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy(): void {
+    console.log('Product component closed...')
   }
 }
 

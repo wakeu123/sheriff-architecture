@@ -3,10 +3,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ProductListComponent } from "../domains/products/feature/product-list/product-list.component";
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, ProductListComponent],
+  imports: [ButtonModule, ProductListComponent, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [

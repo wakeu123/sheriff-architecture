@@ -6,21 +6,29 @@ import { ProductService } from '@domains/products/data/services/product.service'
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Product } from '@domains/products/data/models/product.model';
+import { Router, RouterOutlet } from '@angular/router';
+import { ToastService } from '@domains/shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ButtonModule, ToastModule],
+  imports: [ButtonModule, ToastModule, RouterOutlet],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [ProductService, DialogService],
 })
 export class ProductListComponent {
 
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
 
   ref: DynamicDialogRef | undefined;
+
+  showNotification(): void {
+    this.toastService.showSuccess('Je suis la notification', 'Notification');
+  }
 
   onShowModal(): void {
     this.ref = this.dialogService.open(ProductComponent, {
@@ -39,10 +47,14 @@ export class ProductListComponent {
         },
     });
 
+    this.router.navigate(['products', 'add']);
+
     this.ref.onClose.subscribe((product: Product) => {
       if(product) {
         this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.utilisateurCreation });
       }
+      console.log('Modal closed...')
+      this.router.navigate(['']);
     });
   }
 
