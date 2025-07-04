@@ -18,6 +18,7 @@ export const config: SheriffConfig = {
     'domain:*': [sameTag, 'domain:shared'],
     'type:feature': ['type:ui', 'type:data', 'type:directives'],
     'type:directives': ['type:utils'],
+    'type:guards': ['type:services'],
     'root': ['domain:*', 'noTag'],
     // add your dependency rules here
   },

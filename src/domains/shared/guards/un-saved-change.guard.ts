@@ -1,9 +1,11 @@
 import { CanDeactivateFn } from "@angular/router";
+import { UnsaveService } from "../services/unsaved/unsave.service";
+import { inject } from "@angular/core";
 
 export interface FormComponent {
   hasUnsavedChanges(): boolean;
 }
 
 export const hasUnsavedChangesGuard: CanDeactivateFn<FormComponent> = (component) => {
-  return component.hasUnsavedChanges() ? confirm('Des modifications non sauvegardées. Quitter ?') : true ;
+  return inject(UnsaveService).closeComponent(component.hasUnsavedChanges());
 }

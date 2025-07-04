@@ -8,6 +8,8 @@ import { ToastModule } from 'primeng/toast';
 import { Product } from '@domains/products/data/models/product.model';
 import { Router, RouterOutlet } from '@angular/router';
 import { ToastService } from '@domains/shared/services/toast/toast.service';
+import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
+
 
 @Component({
   selector: 'app-product-list',
@@ -20,11 +22,16 @@ import { ToastService } from '@domains/shared/services/toast/toast.service';
 export class ProductListComponent {
 
   private readonly router = inject(Router);
+  private readonly confirm = inject(ConfirmService);
   private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
 
   ref: DynamicDialogRef | undefined;
+
+  showConfirm(): void {
+    this.confirm.showConfirmDelete('Je suis la notification', '','Supprimer un produit');
+  }
 
   showNotification(): void {
     this.toastService.showSuccess('Je suis la notification', 'Notification');
@@ -53,7 +60,7 @@ export class ProductListComponent {
       if(product) {
         this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.utilisateurCreation });
       }
-      console.log('Modal closed...')
+      console.log('Modal closed...');
       this.router.navigate(['']);
     });
   }

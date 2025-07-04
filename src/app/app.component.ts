@@ -4,10 +4,12 @@ import { ValidationErrors } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ProductListComponent } from "../domains/products/feature/product-list/product-list.component";
 import { ToastModule } from 'primeng/toast';
+//import { GlobalLoaderComponent } from "../domains/shared/components/global-loader/global-loader.component";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, ProductListComponent, ToastModule],
+  imports: [ButtonModule, ProductListComponent, ToastModule, ConfirmDialogModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [

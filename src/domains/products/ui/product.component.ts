@@ -8,7 +8,8 @@ import { PanelComponent } from "../../shared/components/panel/panel.component";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { City } from '../data/models/city-model';
-import { FormComponent } from '@domains/shared/guards/un-saved-change.guard';
+import { UnsaveService } from '@domains/shared/services/unsaved/unsave.service';
+import { GeneralArrayStore } from '@domains/shared/services/store/general-array.store.util';
 
 @Component({
   selector: 'app-product',
@@ -21,15 +22,13 @@ import { FormComponent } from '@domains/shared/guards/un-saved-change.guard';
   ],
   styleUrl: './product.component.css',
   templateUrl: './product.component.html',
-  providers: []
+  providers: [GeneralArrayStore<City>]
 })
-export class ProductComponent implements OnInit, OnDestroy, FormComponent {
-
-  hasUnsavedChanges(): boolean {
-    return true;
-  }
+export class ProductComponent implements OnInit, OnDestroy {
 
   private readonly dialogRef = inject(DynamicDialogRef);
+  private readonly closedService = inject(UnsaveService);
+  private readonly store = inject(GeneralArrayStore<City>);
   private readonly dialogDataConfig = inject(DynamicDialogConfig);
 
   form!: FormGroup<ProductFormType>;
@@ -37,6 +36,7 @@ export class ProductComponent implements OnInit, OnDestroy, FormComponent {
   value = signal('');
   name = signal('');
   cities = signal<City[]>([]);
+
   isAvailable = input.required({ transform: booleanAttribute });
 
   ngOnInit(): void {
@@ -53,6 +53,8 @@ export class ProductComponent implements OnInit, OnDestroy, FormComponent {
       console.log(this.dialogDataConfig.data.name);
     }
 
+    this.store.setItems(this.cities());
+
     this.form = new FormGroup({
       city: new FormControl<City | undefined>(undefined, { nonNullable: true, validators: Validators.required }),
       objet: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
@@ -63,9 +65,11 @@ export class ProductComponent implements OnInit, OnDestroy, FormComponent {
       prioriteCourrier: new FormControl<string>('', { nonNullable: true }),
       utilisateurCreation: new FormControl<string>(this.name(), { nonNullable: true })
     });
+
   }
 
   onSave(): void {
+    console.table(this.store.items());
     this.form?.markAllAsTouched();
     if(!this.form?.valid) return;
     console.log(this.form?.getRawValue());
@@ -73,7 +77,12 @@ export class ProductComponent implements OnInit, OnDestroy, FormComponent {
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    console.log('Form status: ', this.form?.dirty);
+    if(this.form?.dirty) {
+      const found = this.closedService.closeComponent(true);
+      if(found) this.dialogRef.close();
+    }
+    else { this.dialogRef.close(); }
   }
 
   ngOnDestroy(): void {
