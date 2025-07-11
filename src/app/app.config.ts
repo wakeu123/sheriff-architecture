@@ -9,14 +9,17 @@ import { providePrimeNG } from 'primeng/config';
 import localeFr from "@angular/common/locales/fr";
 import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 registerLocaleData(localeFr, 'fr-Fr');
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    MessageService,
     DialogService,
+    MessageService,
+    JwtHelperService,
     ConfirmationService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
 
     provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true }),
