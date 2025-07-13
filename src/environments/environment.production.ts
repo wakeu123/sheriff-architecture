@@ -1,4 +1,4 @@
 export const environment: Readonly<Record<'apiUrl' | 'wsUrl', string | number>> = {
-  apiUrl: 'http://localhost:9000/api/',
+  apiUrl: 'https://www.wakeu.api/',
   wsUrl: ''
 };
