@@ -1,11 +1,11 @@
-export type ErrorModel = {
+export interface ErrorModel {
     code: number;
     statut: number;
     type: number;
     data: ErrorData;
 }
 
-export type ErrorData =  {
+export interface ErrorData {
  name: string
 }
 

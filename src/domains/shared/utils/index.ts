@@ -1,6 +1,6 @@
 import { MonoTypeOperatorFunction, Observable, ReplaySubject } from "rxjs";
 
-export function myShareplay<T>(bufferSize: number): MonoTypeOperatorFunction<T>{
+export function myShareplay<T>(bufferSize: number): MonoTypeOperatorFunction<T> {
   return (source) => {
     const connector = new ReplaySubject<T>(bufferSize);
     const sourceSub = source.subscribe(value => connector.next(value));
