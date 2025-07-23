@@ -3,8 +3,15 @@ import { DynamicDialogRef } from "primeng/dynamicdialog";
 export class SafeStack {
     private elements: DynamicDialogRef[] = [];
 
+    //private readonly items: readonly DynamicDialogRef[] = [];
+
     push(element: DynamicDialogRef): void {
-        this.elements.push(element);
+        // Mauvaise pratique car créé des effects de bords
+        //this.elements.push(element);
+
+        // Utilisation de la spread operator pour éviter les effets de bord
+        this.elements = [element, ...this.elements];
+
     }
 
     pop(): DynamicDialogRef {
@@ -34,7 +41,7 @@ export class SafeStack {
     }
 
     closeAllRefs(): void {
-      this.elements.forEach(ref => {
+      this.elements.map(ref => {
           if (ref) ref.close();
       });
       this.clear();
