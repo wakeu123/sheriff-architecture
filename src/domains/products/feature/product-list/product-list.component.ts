@@ -9,6 +9,7 @@ import { Product } from '@domains/products/data/models/product.model';
 import { Router, RouterOutlet } from '@angular/router';
 import { ToastService } from '@domains/shared/services/toast/toast.service';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
+import { SafeStack } from '@domains/shared/utils/safe-stack';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class ProductListComponent {
   private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
+
+  stacks = new SafeStack<DynamicDialogRef>();
 
   ref: DynamicDialogRef | undefined;
 
@@ -54,6 +57,15 @@ export class ProductListComponent {
         },
     });
 
+    setTimeout(() => {
+      this.stacks.closeAllRefs();
+      console.log('All modal references closed');
+    }, 3000);
+
+    this.stacks.push(this.ref);
+    console.log('Stack size:', this.stacks.size());
+    console.log('Stack elements:', this.stacks.peek());
+
     this.router.navigate(['products', 'add']);
 
     this.ref.onClose.subscribe((product: Product) => {
@@ -61,6 +73,9 @@ export class ProductListComponent {
         this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.utilisateurCreation });
       }
       console.log('Modal closed...');
+      console.log('Stack cleared');
+      console.log('Stack size:', this.stacks.size());
+      console.log('Stack elements:', this.stacks.peek());
       this.router.navigate(['']);
     });
   }

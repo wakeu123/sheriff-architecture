@@ -15,12 +15,14 @@ interface User {
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
+
+  private readonly USER_KEY = 'user_data';
   private readonly ACCESS_TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token_secure';
-  private readonly USER_KEY = 'user_data';
 
   private readonly jwtHelper = inject(JwtHelperService);
-    private readonly cryptoService = inject(CryptoService);
+  private readonly cryptoService = inject(CryptoService);
+
   saveTokens(tokens: TokenResponse): void {
     // Chiffrement des tokens avant stockage
     const encryptedAccess = this.cryptoService.encrypt(tokens.accessToken);
