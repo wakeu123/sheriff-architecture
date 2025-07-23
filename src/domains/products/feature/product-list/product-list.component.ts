@@ -28,7 +28,7 @@ export class ProductListComponent {
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
 
-  stacks = new SafeStack<DynamicDialogRef>();
+  stacks = new SafeStack();
 
   ref: DynamicDialogRef | undefined;
 

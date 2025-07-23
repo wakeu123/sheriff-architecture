@@ -1,20 +1,20 @@
 import { DynamicDialogRef } from "primeng/dynamicdialog";
 
-export class SafeStack<T> {
-    private elements: T[] = [];
+export class SafeStack {
+    private elements: DynamicDialogRef[] = [];
 
-    push(element: T): void {
+    push(element: DynamicDialogRef): void {
         this.elements.push(element);
     }
 
-    pop(): T {
+    pop(): DynamicDialogRef {
         if (this.isEmpty()) {
             throw new Error("Stack is empty");
         }
-        return this.elements.pop() as T;
+        return this.elements.pop() as DynamicDialogRef;
     }
 
-    peek(): T {
+    peek(): DynamicDialogRef {
         if (this.isEmpty()) {
             throw new Error("Stack is empty");
         }
@@ -35,9 +35,7 @@ export class SafeStack<T> {
 
     closeAllRefs(): void {
       this.elements.forEach(ref => {
-          if (ref && ref instanceof DynamicDialogRef) {
-            ref.close();
-          }
+          if (ref) ref.close();
       });
       this.clear();
     }
