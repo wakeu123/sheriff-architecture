@@ -1,5 +1,12 @@
 <!-- <p-toast /> -->
- <p-toast [baseZIndex]="10001" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" />
+ <p-toast
+  [baseZIndex]="100001"
+  [showTransitionOptions]="'900ms'"
+  [hideTransitionOptions]="'900ms'"
+  [showTransformOptions]="'translateY(100%)'"
+  [showTransformOptions]="'translateX(100%)'"
+  [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" />
+
  <p-confirmDialog key="confirm_delete" />
 
 <!-- <app-global-loader /> -->
