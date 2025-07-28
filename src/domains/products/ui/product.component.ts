@@ -1,15 +1,16 @@
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
+import { City } from '../data/models/city-model';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
-import { DynamicDialogConfig, DynamicDialogRef, } from 'primeng/dynamicdialog';
 import { ProductFormType } from '../data/models/product-form-type';
+import { ToastService } from '@domains/shared/services/toast/toast.service';
+import { DynamicDialogConfig, DynamicDialogRef, } from 'primeng/dynamicdialog';
 import { PanelComponent } from "../../shared/components/panel/panel.component";
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
-import { City } from '../data/models/city-model';
 import { UnsaveService } from '@domains/shared/services/unsaved/unsave.service';
 import { GeneralArrayStore } from '@domains/shared/services/store/general-array.store.util';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'app-product',
@@ -26,6 +27,7 @@ import { GeneralArrayStore } from '@domains/shared/services/store/general-array.
 })
 export class ProductComponent implements OnInit, OnDestroy {
 
+  private readonly toastService = inject(ToastService);
   private readonly dialogRef = inject(DynamicDialogRef);
   private readonly closedService = inject(UnsaveService);
   private readonly store = inject(GeneralArrayStore<City>);
@@ -83,6 +85,10 @@ export class ProductComponent implements OnInit, OnDestroy {
       if(found) this.dialogRef.close();
     }
     else { this.dialogRef.close(); }
+  }
+
+  showNotification(): void {
+    this.toastService.showSuccess('Je suis la notification 2', 'Notification 2');
   }
 
   ngOnDestroy(): void {

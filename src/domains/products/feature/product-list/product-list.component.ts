@@ -48,7 +48,7 @@ export class ProductListComponent {
         data: {
           name: 'Mr. Wakeu Georges Favier'
         },
-        // appendTo: "body",
+        appendTo: "body",
         closable: true,
         baseZIndex: 10000,
         breakpoints: {
@@ -58,7 +58,7 @@ export class ProductListComponent {
     });
 
     setTimeout(() => {
-      this.stacks.closeAllRefs();
+      //this.stacks.closeAllRefs();
       console.log('All modal references closed');
     }, 3000);
 

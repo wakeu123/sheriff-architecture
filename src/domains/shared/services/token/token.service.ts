@@ -1,11 +1,13 @@
 import { inject, Injectable } from "@angular/core";
-import { CryptoService } from "../crypto/crypto.service";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { CryptoService } from "../crypto/crypto.service";
+
 // Define the TokenResponse interface if not already imported
 interface TokenResponse {
   accessToken: string;
   refreshToken: string;
 }
+
 // Define the User interface if not already imported
 interface User {
   id: string;

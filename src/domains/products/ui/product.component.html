@@ -14,6 +14,7 @@
                 <label for="objet" class="w-64">Référence : </label>
                 <input
                   pInputText
+                  placeholder="Référence"
                   formControlName="reference"
                   id="reference"
                   name="reference"
@@ -52,7 +53,7 @@
               <div class="flex flex-row gap-3 w-full">
                 <label for="description" class="w-64">Description : </label>
                 <textarea rows="5" [autoResize]="true"
-                class="emphase w-full" cols="30"
+                class="emphase w-full" cols="30" placeholder="Faites une description"
                 pTextarea formControlName="description"></textarea>
               </div>
             </div>
@@ -165,9 +166,10 @@
       </div>
     </app-colored-panel>
   </form>
-  <div class="flex justify-end gap-2 mt-1">
+  <div class="flex justify-end gap-2 mt-1" id="footer-dialog-actions">
     <p-button label="Cancel" (onClick)="onCancel()" />
     <p-button label="Enregistrer" (onClick)="onSave()" />
+    <p-button label="Notification 2" (onClick)="showNotification()" />
   </div>
 </div>
 
