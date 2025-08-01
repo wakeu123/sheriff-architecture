@@ -68,6 +68,8 @@ export class ProductComponent implements OnInit, OnDestroy {
       utilisateurCreation: new FormControl<string>(this.name(), { nonNullable: true })
     });
 
+    console.table(this.store.items())
+
   }
 
   onSave(): void {

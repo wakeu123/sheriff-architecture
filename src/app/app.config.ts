@@ -7,9 +7,9 @@ import { routes } from './app.routes';
 import { MyPreset } from './my-preset';
 import { providePrimeNG } from 'primeng/config';
 import localeFr from "@angular/common/locales/fr";
-import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
 
 registerLocaleData(localeFr, 'fr-Fr');
 
@@ -32,12 +32,12 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       ripple: true,
       theme: {
-          preset: MyPreset,
-          options: {
-                    prefix: 'p',
-                    darkModeSelector: 'my-app-dark',
-                    cssLayer: false
-                }
+        preset: MyPreset,
+        options: {
+          prefix: 'p',
+          darkModeSelector: 'my-app-dark',
+          cssLayer: false
+        }
       }
     })
   ],

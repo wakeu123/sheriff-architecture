@@ -7,13 +7,14 @@ export type RequestStatus =
   | 'fulfilled'
   | { error: string };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RequestStatusState = { requestStatus: RequestStatus };
 
 export function withRequestStatus() {
   return signalStoreFeature(
     withState<RequestStatusState>({ requestStatus: 'idle' }),
     withComputed(({ requestStatus }) => ({
-      isPendind: computed(() => requestStatus() === 'pending'),
+      isPending: computed(() => requestStatus() === 'pending'),
       isFulfiled: computed(() => requestStatus() === 'fulfilled'),
       error: computed(() => {
         const status = requestStatus();
