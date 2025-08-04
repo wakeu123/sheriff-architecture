@@ -2,11 +2,28 @@
 
 <!-- <app-product [isAvailable]="true" [nbeDraf]="12" /> -->
 
-<div class="d-flex gap-5">
+<div class="durum">
   <p-button label="Show modal" (onClick)="onShowModal()" />
   <p-button label="Show confirm" (onClick)="showConfirm()" />
   <p-button label="Show notification" (onClick)="showNotification()" />
 </div>
+
+<hr class="my-5">
+
+<div class="durum">
+  <p-button label="Flate Bread" (onClick)="this._flatBread.next('flat bread')" />
+  <p-button label="Meat" (onClick)="_meat.next('meat')" />
+  <p-button label="Sauce" (onClick)="_sauce.next('sauce')" />
+  <p-button label="Tomato" (onClick)="_tomato.next('tomato')" />
+  <p-button label="Cabbage" (onClick)="_cabbage.next('cabbage')" />
+</div>
+<hr class="my-5">
+
+<ng-container *ngIf="(durum$ | async) as durum">
+  <h4>Ingredients</h4>
+  {{ durum | json }}
+</ng-container>
+
 
 <router-outlet />
 

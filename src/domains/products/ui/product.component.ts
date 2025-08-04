@@ -10,7 +10,9 @@ import { PanelComponent } from "../../shared/components/panel/panel.component";
 import { UnsaveService } from '@domains/shared/services/unsaved/unsave.service';
 import { GeneralArrayStore } from '@domains/shared/services/store/general-array.store.util';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { booleanAttribute, Component, DestroyRef, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { startWith, tap, zip } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product',
@@ -27,6 +29,7 @@ import { booleanAttribute, Component, inject, input, OnDestroy, OnInit, signal }
 })
 export class ProductComponent implements OnInit, OnDestroy {
 
+  private readonly destroyRef = inject(DestroyRef);
   private readonly toastService = inject(ToastService);
   private readonly dialogRef = inject(DynamicDialogRef);
   private readonly closedService = inject(UnsaveService);
@@ -52,24 +55,42 @@ export class ProductComponent implements OnInit, OnDestroy {
 
     if(this.dialogDataConfig.data) {
       this.name.set(this.dialogDataConfig.data.name);
-      console.log(this.dialogDataConfig.data.name);
+      //console.log(this.dialogDataConfig.data.name);
     }
 
     this.store.setItems(this.cities());
 
     this.form = new FormGroup({
-      city: new FormControl<City | undefined>(undefined, { nonNullable: true, validators: Validators.required }),
-      objet: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
       reference: new FormControl<string>('', { nonNullable: true }),
       description: new FormControl<string>('', { nonNullable: true }),
       etatCourrier: new FormControl<string>('', { nonNullable: true }),
       natureCourrier: new FormControl<string>('', { nonNullable: true }),
       prioriteCourrier: new FormControl<string>('', { nonNullable: true }),
-      utilisateurCreation: new FormControl<string>(this.name(), { nonNullable: true })
+      utilisateurCreation: new FormControl<string>(this.name(), { nonNullable: true }),
+      objet: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      city: new FormControl<City | undefined>(undefined, { nonNullable: true, validators: Validators.required }),
     });
 
-    console.table(this.store.items())
+    //console.table(this.store.items());
+    this.listenerValueChange();
 
+  }
+
+  private listenerValueChange(): void {
+    zip([
+      this.form?.get('reference')?.valueChanges.pipe(startWith('')),
+      this.form?.get('natureCourrier')?.valueChanges
+    ]).pipe(
+      tap((value) => {
+        //if(Object.values(value)[0]){
+          console.log('Value: ', value)
+          console.log(
+            'Zip value 1: ', Object.values(value)[0],
+            ' \nZip value 2: ', Object.values(value)[1])
+       // }
+      }),
+      //takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 
   onSave(): void {
