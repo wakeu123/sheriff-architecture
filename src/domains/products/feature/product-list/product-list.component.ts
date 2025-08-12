@@ -31,6 +31,7 @@ export class ProductListComponent implements OnInit{
   private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
+  private readonly productService = inject(ProductService);
 
   stacks = new SafeStack();
 
@@ -61,6 +62,7 @@ export class ProductListComponent implements OnInit{
 
   showNotification(): void {
     this.toastService.showSuccess('Je suis la notification', 'Notification');
+    console.log(this.productService.getFullUrl())
   }
 
   onShowModal(): void {
