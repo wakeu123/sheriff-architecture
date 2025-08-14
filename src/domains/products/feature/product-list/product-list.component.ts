@@ -1,4 +1,4 @@
-import { Order, Product, ProductResponse } from './../../data/models/product.model';
+import { Order, Product, ProductRequest, ProductResponse } from './../../data/models/product.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
 import { ProductService } from '@domains/products/data/services/product.service';
 import { ToastService } from '@domains/shared/services/toast/toast.service';
@@ -50,6 +50,7 @@ export class ProductListComponent implements OnInit{
   items = signal<ProductResponse[]>([]);
 
   ngOnInit(): void {
+    this.store.loadProducts(undefined);
     this.items().sort((a, b) => 1 * a.name.localeCompare(b.name))
     this.durum$ = zip(
       this._flatBread.pipe(tap(console.log)),
@@ -78,19 +79,48 @@ export class ProductListComponent implements OnInit{
   addProduct(): void {
     const product: ProductResponse = {
       id: this.store.productsCount() + 1,
-      name: 'Ordinateur',
+      name: 'Telephone',
       uniqueCode: "D348d-fdgfe-sbgbf-dbn32-ju8dg",
-      description: "Il s'agit de la description de ordinateur."
+      description: "Il s'agit de la description de Telephone."
     };
 
-    this.store.add(product);
-    this.store.addProduct(product);
+    const productRequest : ProductRequest = {
+      name: product.name,
+      description: product.description
+    };
+
+    //this.store.add(product);
+    console.log('Store products length 1: ', this.store.productsCount());
+    this.store.addProduct(productRequest);
     console.log(this.store.products());
-    console.log(this.store.productsCount());
+  }
+
+  editProduct(product: ProductResponse): void {
+    this.store.updateSelectedProduct(product);
+    //this.router.navigate(['products', 'edit', product.id]);
+  }
+
+  deleteProduct(product: ProductResponse): void {
+    this.confirm.showConfirmDelete(
+      `Êtes-vous sûr de vouloir supprimer le produit ${product.name} ?`,
+      () => {
+        this.store.updateSelectedProduct(product);
+        this.store.deleteProduct(product);
+      },
+      () => {
+        console.log('Deletion cancelled');
+      },
+      'pi pi-exclamation-triangle',
+      'Supprimer un produit',
+    );
+    console.log('Product to delete: ', product);
+    console.log('Store products before deletion: ', this.store.products());
+    console.log('Store products count before deletion: ', this.store.productsCount());  
+
   }
 
   showConfirm(): void {
-    this.confirm.showConfirmDelete('Je suis la notification', '','Supprimer un produit');
+    //this.confirm.showConfirmDelete('Je suis la notification', '','Supprimer un produit');
   }
 
   showNotification(): void {

@@ -11,7 +11,11 @@ export abstract class BaseHttpService {
   abstract endpoint: string;
 
   getFullUrl(): string {
-    return `${this.baseUrl}/${this.endpoint}`
+    return `${this.baseUrl}/${this.endpoint}`;
+  }
+
+    search<T>(): Observable<T[]> {
+    return this.http.get<T[]>(this.getFullUrl());
   }
 
   get<T>(params?: HttpParams, headers?: HttpHeaders): Observable<T> {

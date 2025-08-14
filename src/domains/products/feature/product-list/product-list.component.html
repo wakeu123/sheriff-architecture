@@ -24,7 +24,23 @@
   <h4>Ingredients</h4>
   {{ durum | json }}
 </ng-container>
+<hr class="my-5">
+@for (item of store.products(); track item) {
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ item.name }}</h5>
+      <p class="card-text">{{ item.description }}</p>
+      <p class="card-text">
+        <small class="text-muted">Code: {{ item.uniqueCode }}</small>
+      </p>
+      <div class="durum">
+        <p-button label="Edit" (onClick)="editProduct(item)" />
+        <p-button label="Delete" (onClick)="deleteProduct(item)" />
+      </div>
 
+    </div>
+  </div>
+}
 
 <router-outlet />
 
