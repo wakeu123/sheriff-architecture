@@ -80,7 +80,6 @@ export const ProductStore = signalStore(
       ),
     ),
 
-
     addProduct: rxMethod<ProductRequest>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
@@ -95,9 +94,6 @@ export const ProductStore = signalStore(
                     newProduct: response, 
                     products: [...state.products, response], 
                   }))
-                  console.log('Store: ', store.products());
-                  console.log('Store new product: ', store.newProduct());
-                  console.log('Store products length 2: ', store.productsCount());
               },
               error: (error) => {
                 console.log(error);
