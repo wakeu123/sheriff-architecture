@@ -12,3 +12,17 @@ interface ProductDto {
 }
 
 export type Product = ProductDto;
+
+export type ProductRequest = {
+  name: string;
+  description: string;
+};
+
+export type ProductResponse = {
+  id: number;
+  name: string;
+  uniqueCode: string;
+  description: string;
+};
+
+export type Order = 'ASC' | 'DESC';
