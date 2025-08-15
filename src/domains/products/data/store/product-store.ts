@@ -70,7 +70,7 @@ export const ProductStore = signalStore(
         tapResponse({
           next: (products: ProductResponse[]) => {
             patchState(store, { isLoading: false, products });
-            console.log('Store products: ', store.products());
+            console.table(store.products());
           },
           error: (error) => {
             console.error(error);
@@ -101,6 +101,26 @@ export const ProductStore = signalStore(
               }
             })
           );
+        })
+      )
+    ),
+
+    getCategory: rxMethod<string>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap((uniqueCode) => {
+          return productService.getByuniqueCode(uniqueCode).pipe(
+            tapResponse({
+              next: (response) => {
+                console.log('Category loaded: ', response);
+                patchState(store, { isLoading: false, selectedProduct: response })
+              },
+              error: (error) => {
+                console.log(error)
+                patchState(store, { isLoading: false })
+              }
+            })
+          )
         })
       )
     ),

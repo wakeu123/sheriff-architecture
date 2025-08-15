@@ -96,8 +96,14 @@ export class ProductListComponent implements OnInit{
   }
 
   editProduct(product: ProductResponse): void {
-    this.store.updateSelectedProduct(product);
+    //this.store.updateSelectedProduct(product);
     //this.router.navigate(['products', 'edit', product.id]);
+    this.store.getCategory(product.uniqueCode);
+
+    if(this.store.selectedProduct()) {
+      console.log('Router **********');
+      this.router.navigate(['category', 'unique-code']);
+    }
   }
 
   deleteProduct(product: ProductResponse): void {

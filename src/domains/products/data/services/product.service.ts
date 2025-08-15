@@ -14,4 +14,8 @@ export class ProductService extends BaseHttpService {
   create(model: ProductRequest): Observable<ProductResponse> {
     return this.http.post<ProductResponse>(`${this.getFullUrl()}/`, model);
   }
+
+  getByuniqueCode(categoryUniqueCode: string): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(`${this.getFullUrl()}/by-code/${categoryUniqueCode}`);
+  }
 }
