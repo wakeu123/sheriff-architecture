@@ -11,7 +11,7 @@ import { MessageService } from "primeng/api";
 type ProductState = {
   isLoading: boolean;
   products: ProductResponse[];
-  newProduct: Nullable<ProductResponse>;
+  newProduct: ProductResponse | null;
   filter: { query: string, order: Order };
   selectedProduct: Nullable<ProductResponse>;
 }
@@ -89,10 +89,10 @@ export const ProductStore = signalStore(
               next: (response: ProductResponse) => {
 
                 patchState(store, (state) => (
-                  { 
+                  {
                     isLoading: false,
-                    newProduct: response, 
-                    products: [...state.products, response], 
+                    newProduct: response,
+                    products: [...state.products, response],
                   }))
               },
               error: (error) => {
@@ -112,7 +112,6 @@ export const ProductStore = signalStore(
           return productService.getByuniqueCode(uniqueCode).pipe(
             tapResponse({
               next: (response) => {
-                console.log('Category loaded: ', response);
                 patchState(store, { isLoading: false, selectedProduct: response })
               },
               error: (error) => {

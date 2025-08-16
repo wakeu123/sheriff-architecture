@@ -1,3 +1,20 @@
 <p>Component categories list</p>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Categories</h5>
+    @let categories = facade.categories$ | async;
+    @if(categories) {
+      @for(category of categories; track category) {
+        <div class="card-text">
+          <p>{{ category.name }}</p>
+          <p>{{ category.description }}</p>
+          <div class="actions">
+            <!-- <p-button label="Editer" [routerLink]="['/categories/edit', category.uniqueCode]" /> -->
+            <p-button label="Delete" (onClick)="facade.deleteCategory(category)" />
+          </div>
+        </div>
+      }
+    }
+    <p-button label="Ajouter une categorie" (onClick)="openCategoryDialog()" />
+  </div>
 
-<app-category />

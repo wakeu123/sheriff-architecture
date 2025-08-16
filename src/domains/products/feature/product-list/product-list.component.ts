@@ -5,14 +5,15 @@ import { ToastService } from '@domains/shared/services/toast/toast.service';
 import { ProductComponent } from '@domains/products/ui/product.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SafeStack } from '@domains/shared/utils/safe-stack';
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { NavigationExtras, Router, RouterOutlet } from '@angular/router';
 import { Observable, Subject, tap, zip } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { ProductStore } from '@domains/products/data/store/product-store';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 export type Durum = ['flat bread', 'meat', 'sauce', 'tomato', 'cabbage'];
 
@@ -29,6 +30,7 @@ export class ProductListComponent implements OnInit{
 
   readonly store = inject(ProductStore);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly confirm = inject(ConfirmService);
   private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
@@ -48,6 +50,7 @@ export class ProductListComponent implements OnInit{
   ref: DynamicDialogRef | undefined;
   durum$!: Observable<Durum>;
   items = signal<ProductResponse[]>([]);
+  product$ = toObservable(this.store.selectedProduct);
 
   ngOnInit(): void {
     this.store.loadProducts(undefined);
@@ -100,17 +103,26 @@ export class ProductListComponent implements OnInit{
     //this.router.navigate(['products', 'edit', product.id]);
     this.store.getCategory(product.uniqueCode);
 
-    if(this.store.selectedProduct()) {
-      console.log('Router **********');
-      this.router.navigate(['category', 'unique-code']);
-    }
+    this.product$.pipe(
+      tap((prod) => {
+        if(prod) {
+          const navigationExtras: NavigationExtras = {
+            state: {
+              data: prod
+            }
+          };
+          this.router.navigate(['categories', 'edit', prod?.uniqueCode], navigationExtras);
+        }
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 
   deleteProduct(product: ProductResponse): void {
     this.confirm.showConfirmDelete(
       `Êtes-vous sûr de vouloir supprimer le produit ${product.name} ?`,
       () => {
-        this.store.updateSelectedProduct(product);
+        //this.store.updateSelectedProduct(product);
         this.store.deleteProduct(product);
       },
       () => {
@@ -121,7 +133,7 @@ export class ProductListComponent implements OnInit{
     );
     console.log('Product to delete: ', product);
     console.log('Store products before deletion: ', this.store.products());
-    console.log('Store products count before deletion: ', this.store.productsCount());  
+    console.log('Store products count before deletion: ', this.store.productsCount());
 
   }
 

@@ -2,15 +2,15 @@ import { ButtonModule } from 'primeng/button';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ProductListComponent } from "../domains/products/feature/product-list/product-list.component";
 import { ToastModule } from 'primeng/toast';
 //import { GlobalLoaderComponent } from "../domains/shared/components/global-loader/global-loader.component";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CryptoService } from '@domains/shared/services/crypto/crypto.service';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, ProductListComponent, ToastModule, ConfirmDialogModule],
+  imports: [ButtonModule, ToastModule, ConfirmDialogModule, RouterLink, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
