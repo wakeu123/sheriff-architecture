@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CategoryComponent } from '@domains/categories/ui/category.component';
 import { CategoryFacade } from '@domains/categories/utils/category-fascade';
 import { Category } from '@domains/shared/models/category.model';
@@ -16,15 +15,11 @@ import { DialogService } from 'primeng/dynamicdialog';
   providers: [CategoryFacade],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent {
 
   readonly facade = inject(CategoryFacade);
   private readonly confirm = inject(ConfirmService);
   private readonly dialogService = inject(DialogService);
-
-  ngOnInit(): void {
-    this.facade.init();
-  }
 
   openCategoryDialog(): void {
     this.dialogService.open(CategoryComponent, {

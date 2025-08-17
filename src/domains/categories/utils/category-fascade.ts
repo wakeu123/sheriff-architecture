@@ -1,5 +1,5 @@
-import { computed, inject, Injectable } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
+import { computed, inject, Injectable } from "@angular/core";
 import { Category } from "@domains/shared/models/category.model";
 import { CategoriesListStore } from "../utils/utils-category-store";
 
@@ -16,11 +16,6 @@ export class CategoryFacade {
   categories = computed(() => {
     return this.store.sortedCategories();
   });
-
-
-  init(): void {
-    this.store.loadCategories();
-  }
 
   getCategories(): Category[] {
     return this.store.sortedCategories();

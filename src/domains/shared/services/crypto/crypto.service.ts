@@ -17,10 +17,6 @@ export class CryptoService {
     return atob(encrypted);
   }
 
-  getKey(): string {
-    return this.generateSecureKey();
-  }
-
   private generateSecureKey(): string {
     // Génération d'une clé sécurisé
     const array = new Uint8Array(32);

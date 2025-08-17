@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Observable } from "rxjs";
+import { IDelete, IGet, IPagination, IPost, IPut, ISearch } from "./i-post.interface";
 
-export abstract class BaseHttpService {
+export abstract class BaseHttpService implements IGet, IPost, IPut, IDelete, ISearch, IPagination {
 
   readonly http = inject(HttpClient);
 
