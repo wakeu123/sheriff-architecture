@@ -1,7 +1,6 @@
-import { inject, Injectable } from "@angular/core";
+import { computed, inject, Injectable } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { Category } from "@domains/shared/models/category.model";
-import { SaveType } from "@domains/shared/models/save-type.mode";
 import { CategoriesListStore } from "../utils/utils-category-store";
 
 @Injectable()
@@ -9,17 +8,30 @@ export class CategoryFacade {
 
   private readonly store = inject(CategoriesListStore);
 
-
-  saveType = this.store.saveType();
-  categories$= toObservable(this.store.categories);
   category$ = toObservable(this.store.newCategory);
+
+  categories$ = toObservable(this.store.categories);
+
+
+  categories = computed(() => {
+    return this.store.sortedCategories();
+  });
+
 
   init(): void {
     this.store.loadCategories();
   }
 
-  add(saveType: SaveType, category: Partial<Category>): void {
-    this.store.addCategory({saveType, category});
+  getCategories(): Category[] {
+    return this.store.sortedCategories();
+  }
+
+  add(category: Partial<Category>): void {
+    this.store.addCategory(category);
+  }
+
+  resetNewCategory(): void {
+    this.store.resetNewCategory();
   }
 
   deleteCategory(category: Category): void {

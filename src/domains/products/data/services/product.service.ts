@@ -9,7 +9,7 @@ export class ProductService extends BaseHttpService {
 
   override baseUrl = environment.apiUrl as string;
 
-  override endpoint = 'categories';
+  override endpoint = 'products';
 
   create(model: ProductRequest): Observable<ProductResponse> {
     return this.http.post<ProductResponse>(`${this.getFullUrl()}/`, model);

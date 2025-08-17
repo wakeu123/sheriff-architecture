@@ -8,11 +8,9 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { HttpParams } from '@angular/common/http';
 import { tapResponse } from '@ngrx/operators';
 import { MessageService } from "primeng/api";
-import { SaveType } from "@domains/shared/models/save-type.mode";
 
 type CategoryState = {
   isLoading: boolean;
-  saveType: SaveType;
   categories: Category[];
   newCategory: Category | null;
   selectedCategory: Nullable<Category>;
@@ -24,7 +22,6 @@ const initialState: CategoryState = {
   isLoading: false,
   newCategory: null,
   selectedCategory: null,
-  saveType: 'SAVE_AND_CLOSE',
   filter: { query: '', order: 'ASC' }
 };
 
@@ -59,6 +56,10 @@ export const CategoriesListStore = signalStore(
       patchState(store, { selectedCategory: category })
     },
 
+    resetNewCategory(): void {
+      patchState(store, { newCategory: null })
+    },
+
     updateOrder(order: OrderType): void {
       patchState(store, (state) => ({ filter: { ...state.filter, order } }))
     },
@@ -74,7 +75,6 @@ export const CategoriesListStore = signalStore(
         tapResponse({
           next: (categories: Category[]) => {
             patchState(store, { isLoading: false, categories });
-            console.table(store.categories());
           },
           error: (error) => {
             console.error(error);
@@ -84,26 +84,32 @@ export const CategoriesListStore = signalStore(
       ),
     ),
 
-    addCategory: rxMethod<{ saveType: SaveType, category: Partial<Category> }>(
+    addCategory: rxMethod<Partial<Category>>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        exhaustMap(({ saveType, category }) => {
+        exhaustMap((category) => {
           return categoryService.post<Category>(category).pipe(
             tapResponse({
-              next: (response: Category) => {
-
-                patchState(store, (state) => (
-                  {
-                    isLoading: false,
-                    saveType: saveType,
-                    newCategory: response,
-                    categories: [...state.categories, response],
-                  }))
+              next: (response) => {
+                patchState(store, { newCategory: response });
+                messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} ajoute avec succès.` });
               },
               error: (error) => {
-                console.log(error);
-                patchState(store, { isLoading: false });
+                console.error('Error added category:', error);
+                messageService.add({ severity: 'error', summary: 'Erreur', detail: `Échec de l'ajout de la categorie ${category.name}` });
               }
+            }),
+            switchMap(() => {
+              return categoryService.search<Category>().pipe(
+                tap((categories: Category[]) => {
+                  patchState(store, { categories, isLoading: false });
+                }),
+              )
+            }),
+            catchError((error) => {
+              console.error('Error fetching categories after addition:', error);
+              patchState(store, { isLoading: false });
+              return throwError(() => error);
             })
           );
         })
@@ -117,7 +123,7 @@ export const CategoriesListStore = signalStore(
           return categoryService.getByuniqueCode(uniqueCode).pipe(
             tapResponse({
               next: (response) => {
-                patchState(store, { isLoading: false, selectedCategory: response })
+                patchState(store, { isLoading: false, selectedCategory: response });
               },
               error: (error) => {
                 console.log(error)
@@ -137,7 +143,6 @@ export const CategoriesListStore = signalStore(
             tapResponse({
               next: () => {
                 messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} supprimé avec succès.` });
-                console.log('Store categories length 3: ', store.categoriesCount());
               },
               error: (error) => {
                 console.error('Error deleting category:', error);
@@ -148,8 +153,6 @@ export const CategoriesListStore = signalStore(
               return categoryService.search<Category>().pipe(
                 tap((categories: Category[]) => {
                   patchState(store, { categories, isLoading: false });
-                  console.log('Store categories after deletion: ', store.categories());
-                  console.log('Store categories count after deletion: ', store.categoriesCount());
                 }),
               )
             }),

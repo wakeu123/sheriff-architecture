@@ -14,7 +14,7 @@ export abstract class BaseHttpService {
     return `${this.baseUrl}/${this.endpoint}`;
   }
 
-    search<T>(): Observable<T[]> {
+  search<T>(): Observable<T[]> {
     return this.http.get<T[]>(this.getFullUrl());
   }
 
@@ -32,5 +32,9 @@ export abstract class BaseHttpService {
 
   delete<T>(params: HttpParams, headers?: HttpHeaders): Observable<T> {
     return this.http.delete<T>(`${this.getFullUrl()}`, { params, headers });
+  }
+
+  getAllWithPagination<T, F>(page: number, pageSize: number, filters?: F, headers?: HttpHeaders): Observable<T> {
+    return this.http.post<T>(`${this.getFullUrl()}/findwithpagination/${page}/${pageSize}`, filters ?? {}, { headers });
   }
 }

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CategoryComponent } from '@domains/categories/ui/category.component';
 import { CategoryFacade } from '@domains/categories/utils/category-fascade';
 import { Category } from '@domains/shared/models/category.model';
@@ -10,10 +10,11 @@ import { DialogService } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [ButtonModule, AsyncPipe],
+  imports: [ButtonModule],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
   providers: [CategoryFacade],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryListComponent implements OnInit {
 
@@ -29,21 +30,21 @@ export class CategoryListComponent implements OnInit {
     this.dialogService.open(CategoryComponent, {
       header: 'Ajouter une categorie',
       width: '50%',
+      closable: true
     });
   }
 
   deleteCategory(category: Category): void {
-      this.confirm.showConfirmDelete(
-        `Êtes-vous sûr de vouloir supprimer la catégorie ${category.name} ?`,
-        () => {
-          this.facade.deleteCategory(category);
-        },
-        () => {
-          console.log('Deletion cancelled');
-        },
-        'pi pi-exclamation-triangle',
-        'Supprimer un produit',
-      );
-
-    }
+    this.confirm.showConfirmDelete(
+      `Êtes-vous sûr de vouloir supprimer la catégorie ${category.name} ?`,
+      () => {
+        this.facade.deleteCategory(category);
+      },
+      () => {
+        console.log('Deletion cancelled');
+      },
+      'pi pi-exclamation-triangle',
+      'Supprimer un produit',
+    );
+  }
 }

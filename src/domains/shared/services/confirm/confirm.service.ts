@@ -14,11 +14,10 @@ export class ConfirmService {
       closable: title ? true : false,
       icon: icon ? icon : 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log('Confirmed deletion');
         acceptFn();
       },
       reject: () => {
-        console.log('Deletion rejected');
+        rejectFn();
       }
     });
   }

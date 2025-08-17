@@ -1,11 +1,11 @@
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CategoryAddFormType } from '@domains/shared/models/category.model';
 import { SaveType } from '@domains/shared/models/save-type.mode';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
 import { CategoryFacade } from '../utils/category-fascade';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-category',
@@ -16,12 +16,14 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   providers: [CategoryFacade],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnDestroy {
 
   private readonly facade = inject(CategoryFacade);
   private readonly dialogRef = inject(DynamicDialogRef);
 
   form: FormGroup<CategoryAddFormType> | null = null;
+
+  saveType = signal<SaveType>('SAVE_AND_CLOSE');
 
   ngOnInit(): void {
     this.form = new FormGroup<CategoryAddFormType>({
@@ -33,22 +35,32 @@ export class CategoryComponent implements OnInit {
   }
 
   save(saveType: SaveType): void {
-    console.log('Save type: ', saveType);
+    this.saveType.set(saveType);
 
     this.form?.markAllAsTouched();
     if(!this.form?.valid) return;
 
-    this.facade.add(saveType, this.form.value);
+    this.facade.add(this.form.value);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 
   modalClose(): void {
     this.facade.category$.subscribe((response) => {
-      if(response && this.facade.saveType === 'SAVE_AND_CLOSE') {
+      if(response && this.saveType() === 'SAVE_AND_CLOSE') {
+        this.facade.resetNewCategory();
         this.dialogRef.close();
-      } else if(response && this.facade.saveType === 'SAVE_AND_CONTINUE') {
+      } else if(response && this.saveType() === 'SAVE_AND_CONTINUE') {
+        this.facade.resetNewCategory();
         this.form?.reset();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.saveType.set('SAVE_AND_CLOSE');
   }
 
 }

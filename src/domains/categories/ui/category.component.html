@@ -9,8 +9,9 @@
       <input type="text" pInputText id="description" class="w-full" formControlName="description" >
     </div>
     <div class="actions">
-      <p-button label="Enregistrer et quitter" (onClick)="save('SAVE_AND_CLOSE')" />
-      <p-button label="Enregistrer et continuer" (onClick)="save('SAVE_AND_CONTINUE')" />
+      <p-button label="Enregistrer et quitter" [disabled]="!form.valid" (onClick)="save('SAVE_AND_CLOSE')" />
+      <p-button label="Enregistrer et continuer" [disabled]="!form.valid" (onClick)="save('SAVE_AND_CONTINUE')" />
+      <p-button label="Annuler" (onClick)="onCancel()" />
     </div>
   </form>
 }

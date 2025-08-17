@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { CategoriesListStore } from '@domains/categories/utils/utils-category-store';
 //import { hasUnsavedChangesGuard } from '@domains/shared/guards/un-saved-change.guard';
 
 export const routes: Routes = [
@@ -12,8 +11,7 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () =>
       import('../domains/categories/feature/category-list/category-list.component')
-        .then((c) => c.CategoryListComponent),
-    providers: [CategoriesListStore]
+        .then((c) => c.CategoryListComponent)
   },
   {
     path: 'categories/edit/:unique-code',
