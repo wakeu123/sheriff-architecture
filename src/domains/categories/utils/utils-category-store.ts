@@ -1,3 +1,4 @@
+import { hideLoading, setError, setFulfilled, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
 import { catchError, exhaustMap, pipe, switchMap, tap, throwError } from 'rxjs';
 import { computed, inject, InjectionToken } from "@angular/core";
@@ -8,9 +9,13 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { tapResponse } from '@ngrx/operators';
 import { MessageService } from "primeng/api";
-import { hideLoading, setError, setFulfilled, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
 
 type CategoryState = {
+  page: number;
+  sortBy: string;
+  pageSize: number;
+  pageSizes: number[];
+  sortOrder: OrderType;
   categories: Category[];
   newCategory: Category | null;
   selectedCategory: Nullable<Category>;
@@ -18,10 +23,15 @@ type CategoryState = {
 }
 
 const initialState: CategoryState = {
+  page: 1,
+  sortBy: '',
+  pageSize: 20,
   categories: [],
+  sortOrder: 'DESC',
   newCategory: null,
   selectedCategory: null,
-  filter: { query: '', order: 'ASC' }
+  filter: { query: '', order: 'ASC' },
+  pageSizes: [20, 50, 100, 500, 1000]
 };
 
 const CATEGORY_STATE = new InjectionToken<CategoryState>(
@@ -46,6 +56,18 @@ export const CategoriesListStore = signalStore(
     }),
   })),
   withMethods((store, categoryService = inject(CategoryService), messageService = inject(MessageService)) => ({
+
+    setPage(page: number): void {
+      patchState(store, { page });
+    },
+
+    setPageSize(pageSize: number): void {
+      patchState(store, { page: 1, pageSize });
+    },
+
+    setSortBy(sortBy: string): void {
+      patchState(store, { sortBy });
+    },
 
     updateQuery(query: string): void {
       patchState(store, (state) => ({ filter: { ...state.filter, query } }))
@@ -107,7 +129,7 @@ export const CategoriesListStore = signalStore(
             switchMap(() => {
               return categoryService.search<Category>().pipe(
                 tap((categories: Category[]) => {
-                  patchState(store, { categories, isLoading: false });
+                  patchState(store, { categories });
                 }),
               )
             }),

@@ -1,5 +1,5 @@
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryAddFormType } from '@domains/shared/models/category.model';
 import { SaveType } from '@domains/shared/models/save-type.mode';
 import { CategoryFacade } from '../utils/category-fascade';

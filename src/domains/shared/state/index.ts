@@ -1,5 +1,6 @@
 import { computed } from '@angular/core';
 import { signalStoreFeature, withComputed, withState } from '@ngrx/signals'
+import { OrderType } from '../models/order-type';
 
 
 // Request Status SignalStoreFeature
