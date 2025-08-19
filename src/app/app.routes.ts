@@ -16,5 +16,11 @@ export const routes: Routes = [
   {
     path: 'categories/edit/:unique-code',
     loadComponent: () => import('../domains/categories/ui/category.component').then((c) => c.CategoryComponent)
-  }
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('../domains/products/feature/product-list/product-list.component')
+        .then((c) => c.ProductListComponent)
+  },
 ];

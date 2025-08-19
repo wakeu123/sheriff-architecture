@@ -25,13 +25,13 @@
   {{ durum | json }}
 </ng-container>
 <hr class="my-5">
-@for (item of store.products(); track item) {
+@for (item of store.items(); track item) {
   <div class="card mb-3">
     <div class="card-body">
-      <h5 class="card-title">{{ item.name }}</h5>
+      <h5 class="card-title">{{ item.city }}</h5>
       <p class="card-text">{{ item.description }}</p>
       <p class="card-text">
-        <small class="text-muted">Code: {{ item.uniqueCode }}</small>
+        <small class="text-muted">Code: {{ item.reference }}</small>
       </p>
       <div class="durum">
         <p-button label="Edit" (onClick)="editProduct(item)" />

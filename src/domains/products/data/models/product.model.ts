@@ -1,6 +1,6 @@
 import { City } from "./city-model";
 
-type ProductDTO {
+type ProductDTO = {
   objet: string;
   reference: string;
   description: string;

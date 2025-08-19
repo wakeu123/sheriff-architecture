@@ -6,7 +6,7 @@ import { ProductComponent } from '@domains/products/ui/product.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SafeStack } from '@domains/shared/utils/safe-stack';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { NavigationExtras, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Observable, Subject, tap, zip } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
@@ -28,7 +28,7 @@ export type Durum = ['flat bread', 'meat', 'sauce', 'tomato', 'cabbage'];
 })
 export class ProductListComponent implements OnInit{
 
-  readonly store = inject(ProductStore);
+  store = inject(ProductStore);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly confirm = inject(ConfirmService);
@@ -73,17 +73,17 @@ export class ProductListComponent implements OnInit{
     //console.log('Store: ', this.store.filter());
   }
 
-  updateQuery(query: string): void {
-    //this.store.updateQuery(query);
-  }
+  // updateQuery(query: string): void {
+  //   //this.store.updateQuery(query);
+  // }
 
-  updateOrder(order: Order): void {
-    //this.store.updateOrder(order);
-  }
+  // updateOrder(order: Order): void {
+  //   //this.store.updateOrder(order);
+  // }
 
   addProduct(): void {
     const product: ProductResponse = {
-      id: this.store.productsCount() + 1,
+      id: this.store.totalItems() + 1,
       name: 'Telephone',
       uniqueCode: "D348d-fdgfe-sbgbf-dbn32-ju8dg",
       description: "Il s'agit de la description de Telephone."
@@ -95,13 +95,13 @@ export class ProductListComponent implements OnInit{
     };
 
     //this.store.add(product);
-    console.log('Store products length 1: ', this.store.productsCount());
+    console.log('Store products length 1: ', this.store.totalPages());
     this.store.addProduct(productRequest);
-    console.log(this.store.products());
+    console.log(this.store.items());
   }
 
-  editProduct(product: ProductResponse): void {
-    //this.store.updateSelectedProduct(product);
+  editProduct(product: Product): void {
+    this.store.setSelectedProduct(product);
     //this.router.navigate(['products', 'edit', product.id]);
     //this.store.getCategory(product.uniqueCode);
 
@@ -120,9 +120,9 @@ export class ProductListComponent implements OnInit{
     ).subscribe();
   }
 
-  deleteProduct(product: ProductResponse): void {
+  deleteProduct(product: Product): void {
     this.confirm.showConfirmDelete(
-      `Êtes-vous sûr de vouloir supprimer le produit ${product.name} ?`,
+      `Êtes-vous sûr de vouloir supprimer le produit ${product.objet} ?`,
       () => {
         //this.store.updateSelectedProduct(product);
         //this.store.deleteProduct(product);

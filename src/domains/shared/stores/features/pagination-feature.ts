@@ -1,24 +1,24 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { computed, inject, Injector, Type } from "@angular/core";
-import { hideLoading, PaginatedResponse, showLoading, withLoading } from "@domains/shared/state"
+import { PaginationResponse } from "@domains/shared/models/pagination-response.model";
+import { hideLoading, showLoading, withLoading } from "@domains/shared/state"
 import { tapResponse } from "@ngrx/operators";
 import { patchState, signalStoreFeature, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { MessageService } from "primeng/api";
 import { catchError, Observable, of, pipe, switchMap, tap } from "rxjs"
 
-export type PaginationParams = {
+export interface PaginationParams {
   page?: number;
   size?: number;
   sort?: string;
   filters?: Record<string, unknown>;
 }
 
-export type PaginationState<T> = {
+export interface PaginationState<T> {
   items: T[];
   pageSize: number;
   totalItems: number;
-  totalPages: number;
   currentPage: number;
   error: string | null;
   filters: Record<string, unknown>;
@@ -28,15 +28,17 @@ export type PaginationState<T> = {
   };
 }
 
-export type ApiService<T> = {
-  getAllWithPagination(params: PaginationParams): Observable<PaginatedResponse<T>>;
+export interface ApiService<T> {
+  getAllWithPagination(params: PaginationParams): Observable<PaginationResponse<T>>;
 }
 
-export const API_SERVICE_TOKEN = Symbol('API_SERVICE_TOKEN');
+import { InjectionToken } from "@angular/core";
+//export const API_SERVICE_TOKEN = Symbol('API_SERVICE_TOKEN');
+export const API_SERVICE_TOKEN = new InjectionToken<ApiService<unknown>>('API_SERVICE_TOKEN');
 
 
 export function withPagination<T, Service extends ApiService<T> = ApiService<T>>(
-  serviceToken: Type<Service> | string = API_SERVICE_TOKEN
+  serviceToken: Type<Service> | InjectionToken<Service> | string = API_SERVICE_TOKEN
 ) {
   return signalStoreFeature(
     withState<PaginationState<T>>({
@@ -45,7 +47,6 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
       filters: {},
       pageSize: 20,
       totalItems: 0,
-      totalPages: 0,
       currentPage: 1,
       sort: {
         field: '',
@@ -55,10 +56,12 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
 
     withLoading(),
 
-    withMethods((store, injector = inject(Injector), _messageService = inject(MessageService)) => {
-      // Injection dynamique du service
+    withMethods((store) => {
+      const injector = inject(Injector);
+      const _messageService = inject(MessageService);
+
       const apiService = injector.get<Service>(
-        typeof serviceToken === 'string' ? serviceToken : serviceToken
+        serviceToken as Type<Service> | InjectionToken<Service>
       );
 
       const totalPages = computed(() =>
@@ -77,21 +80,21 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
         pipe(
           tap(() => patchState(store, showLoading(), { error: null })),
           switchMap((params) => {
-            const actualParams = params || {
+            const actualParams = params || ({
               page: store.currentPage(),
               size: store.pageSize(),
               filters: store.filters ?? {},
               sort: `${store.sort()?.field},${store.sort()?.direction}`
-            };
+            } as unknown as PaginationParams);
 
             return apiService.getAllWithPagination(actualParams).pipe(
               tapResponse({
-                next: (response: PaginatedResponse<T>) => {
+                next: (response: PaginationResponse<T>) => {
                   patchState(store, {
                     items: response.items,
                     totalItems: response.total,
                     currentPage: response.page,
-                    totalPages: response.size
+                    pageSize: response.pageSize,
                   }, hideLoading());
                 },
                 error: (error: HttpErrorResponse) => {
