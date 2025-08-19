@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Observable } from "rxjs";
-import { IDelete, IGet, IPagination, IPost, IPut, ISearch } from "./i-post.interface";
+import { IDelete, IGet, IPost, IPut, ISearch } from "./i-post.interface";
 
-export abstract class BaseHttpService implements IGet, IPost, IPut, IDelete, ISearch, IPagination {
+export abstract class BaseHttpService implements IGet, IPost, IPut, IDelete, ISearch {
 
   readonly http = inject(HttpClient);
 
@@ -35,7 +35,7 @@ export abstract class BaseHttpService implements IGet, IPost, IPut, IDelete, ISe
     return this.http.delete<T>(`${this.getFullUrl()}`, { params, headers });
   }
 
-  getAllWithPagination<T, F>(page: number, pageSize: number, filters?: F, headers?: HttpHeaders): Observable<T> {
-    return this.http.post<T>(`${this.getFullUrl()}/findwithpagination/${page}/${pageSize}`, filters ?? {}, { headers });
-  }
+  // getAllWithPagination<T, F>(page: number, pageSize: number, filters?: F, headers?: HttpHeaders): Observable<T> {
+  //   return this.http.post<T>(`${this.getFullUrl()}/findwithpagination/${page}/${pageSize}`, filters ?? {}, { headers });
+  // }
 }

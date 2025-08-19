@@ -12,8 +12,8 @@ import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
-import { ProductStore } from '@domains/products/data/store/product-store';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { ProductStore } from '@domains/products/utils/product-store';
 
 export type Durum = ['flat bread', 'meat', 'sauce', 'tomato', 'cabbage'];
 
@@ -53,7 +53,7 @@ export class ProductListComponent implements OnInit{
   product$ = toObservable(this.store.selectedProduct);
 
   ngOnInit(): void {
-    this.store.loadProducts(undefined);
+    //this.store.loadProducts(undefined);
     this.items().sort((a, b) => 1 * a.name.localeCompare(b.name))
     this.durum$ = zip(
       this._flatBread.pipe(tap(console.log)),
@@ -65,18 +65,20 @@ export class ProductListComponent implements OnInit{
       tap((durum) => console.log('Enjoy: ', durum))
     );
 
+    //this.store.
+
     //this.clickedRows.add()
-    console.log('Store: ', this.store.products());
-    console.log('Store: ', this.store.isLoading());
-    console.log('Store: ', this.store.filter());
+    //console.log('Store: ', this.store.products());
+    //console.log('Store: ', this.store.isLoading());
+    //console.log('Store: ', this.store.filter());
   }
 
   updateQuery(query: string): void {
-    this.store.updateQuery(query);
+    //this.store.updateQuery(query);
   }
 
   updateOrder(order: Order): void {
-    this.store.updateOrder(order);
+    //this.store.updateOrder(order);
   }
 
   addProduct(): void {
@@ -101,17 +103,17 @@ export class ProductListComponent implements OnInit{
   editProduct(product: ProductResponse): void {
     //this.store.updateSelectedProduct(product);
     //this.router.navigate(['products', 'edit', product.id]);
-    this.store.getCategory(product.uniqueCode);
+    //this.store.getCategory(product.uniqueCode);
 
     this.product$.pipe(
       tap((prod) => {
         if(prod) {
-          const navigationExtras: NavigationExtras = {
-            state: {
-              data: prod
-            }
-          };
-          this.router.navigate(['categories', 'edit', prod?.uniqueCode], navigationExtras);
+          // const navigationExtras: NavigationExtras = {
+          //   state: {
+          //     data: prod
+          //   }
+          // };
+          //this.router.navigate(['categories', 'edit', prod?.uniqueCode], navigationExtras);
         }
       }),
       takeUntilDestroyed(this.destroyRef)
@@ -123,7 +125,7 @@ export class ProductListComponent implements OnInit{
       `Êtes-vous sûr de vouloir supprimer le produit ${product.name} ?`,
       () => {
         //this.store.updateSelectedProduct(product);
-        this.store.deleteProduct(product);
+        //this.store.deleteProduct(product);
       },
       () => {
         console.log('Deletion cancelled');
@@ -132,8 +134,8 @@ export class ProductListComponent implements OnInit{
       'Supprimer un produit',
     );
     console.log('Product to delete: ', product);
-    console.log('Store products before deletion: ', this.store.products());
-    console.log('Store products count before deletion: ', this.store.productsCount());
+    //console.log('Store products before deletion: ', this.store.products());
+    //console.log('Store products count before deletion: ', this.store.productsCount());
 
   }
 

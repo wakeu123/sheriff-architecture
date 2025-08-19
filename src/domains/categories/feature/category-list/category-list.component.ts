@@ -25,6 +25,7 @@ export class CategoryListComponent {
     this.dialogService.open(CategoryComponent, {
       header: 'Ajouter une categorie',
       width: '50%',
+      appendTo: 'body',
       closable: true
     });
   }

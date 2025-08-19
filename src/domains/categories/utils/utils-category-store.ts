@@ -27,10 +27,10 @@ const initialState: CategoryState = {
   sortBy: '',
   pageSize: 20,
   categories: [],
-  sortOrder: 'DESC',
+  sortOrder: 'desc',
   newCategory: null,
   selectedCategory: null,
-  filter: { query: '', order: 'ASC' },
+  filter: { query: '', order: 'asc' },
   pageSizes: [20, 50, 100, 500, 1000]
 };
 
@@ -49,7 +49,7 @@ export const CategoriesListStore = signalStore(
     categoriesCount: computed(() => categories().length),
 
     sortedCategories: computed(() => {
-      const direction = filter().order === 'ASC' ? 1 : -1;
+      const direction = filter().order === 'asc' ? 1 : -1;
 
       return categories().sort((a, b) =>
       direction * a.name.localeCompare(b.name));

@@ -20,7 +20,3 @@ export interface IPut {
 export interface IDelete {
   delete<T>(params: HttpParams, headers?: HttpHeaders): Observable<T>;
 }
-
-export interface IPagination {
-  getAllWithPagination<T, F>(page: number, pageSize: number, filters?: F, headers?: HttpHeaders): Observable<T>;
-}

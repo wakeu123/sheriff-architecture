@@ -1,6 +1,6 @@
 import { City } from "./city-model";
 
-interface ProductDto {
+type ProductDTO {
   objet: string;
   reference: string;
   description: string;
@@ -11,7 +11,7 @@ interface ProductDto {
   utilisateurCreation: string;
 }
 
-export type Product = ProductDto;
+export type Product = ProductDTO;
 
 export type ProductRequest = {
   name: string;

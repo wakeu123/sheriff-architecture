@@ -1,6 +1,10 @@
-import { computed } from '@angular/core';
-import { signalStoreFeature, withComputed, withState } from '@ngrx/signals'
-import { OrderType } from '../models/order-type';
+import { computed, inject } from '@angular/core';
+import { patchState, signalStoreFeature, withComputed, withMethods, withState } from '@ngrx/signals'
+import { CategoryService } from '@domains/categories/utils/utils-category.service';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, of, pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 // Request Status SignalStoreFeature
@@ -69,3 +73,6 @@ export function showLoading(): LoaderState {
 export function hideLoading(): LoaderState {
   return { isLoading: false };
 }
+
+
+
