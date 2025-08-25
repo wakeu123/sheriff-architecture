@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { computed, inject, Injector, Type } from "@angular/core";
 import { PaginationResponse } from "@domains/shared/models/pagination-response.model";
-import { hideLoading, showLoading, withLoading } from "@domains/shared/state"
+import { hideLoading, setError, showLoading, withLoading, withRequestStatus } from "@domains/shared/state"
 import { tapResponse } from "@ngrx/operators";
 import { patchState, signalStoreFeature, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
@@ -20,7 +20,6 @@ export interface PaginationState<T> {
   pageSize: number;
   totalItems: number;
   currentPage: number;
-  error: string | null;
   filters: Record<string, unknown>;
   sort: {
     field: string;
@@ -43,7 +42,6 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
   return signalStoreFeature(
     withState<PaginationState<T>>({
       items: [],
-      error: null,
       filters: {},
       pageSize: 20,
       totalItems: 0,
@@ -55,6 +53,8 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
     }),
 
     withLoading(),
+
+    withRequestStatus(),
 
     withMethods((store) => {
       const injector = inject(Injector);
@@ -78,7 +78,7 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
 
       const loadPage = rxMethod<PaginationParams | void>(
         pipe(
-          tap(() => patchState(store, showLoading(), { error: null })),
+          tap(() => patchState(store, showLoading())),
           switchMap((params) => {
             const actualParams = params || ({
               page: store.currentPage(),
@@ -99,7 +99,7 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
                 },
                 error: (error: HttpErrorResponse) => {
                   console.log(error);
-                  patchState(store, { error: error.error.message }, hideLoading());
+                  patchState(store, setError(error.error.message), hideLoading());
                   if(error.status === 503) {
                     _messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });
                   } else if(error.status === 500) {
@@ -111,7 +111,7 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
           }),
           catchError((error: HttpErrorResponse) => {
             console.log(error);
-            patchState(store, { error: error.error.message }, hideLoading());
+            patchState(store, setError(error.error.message), hideLoading());
             if(error.status === 503) {
               _messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });
             } else if(error.status === 500) {

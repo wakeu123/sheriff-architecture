@@ -17,8 +17,6 @@ export type ProductState = {
 export const ProductStore = signalStore(
   { providedIn: 'root' },
 
-  withRequestStatus(),
-
   withPagination<Product, ProductService>(ProductService),
 
   withState<ProductState>({

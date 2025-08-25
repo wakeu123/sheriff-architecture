@@ -1,3 +1,4 @@
+import { setPending } from '@domains/shared/state';
 import { Order, Product, ProductRequest, ProductResponse } from './../../data/models/product.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
 import { ProductService } from '@domains/products/data/services/product.service';
