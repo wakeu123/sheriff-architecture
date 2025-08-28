@@ -162,6 +162,34 @@ export const CategoriesListStore = signalStore(
       )
     ),
 
+    getCategoryUnsuppoted: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap((categoryID) => {
+          return categoryService.getUnSupportedMethod(categoryID).pipe(
+            tapResponse({
+              next: (response) => {
+                patchState(store, { isLoading: false, selectedCategory: response });
+              },
+              error: (error: HttpErrorResponse) => {
+                console.log(error)
+                patchState(store, { isLoading: false });
+                if(error.status === 503) {
+                  messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });
+                } else if(error.status === 404) {
+                  messageService.add({ severity: 'error', summary: 'Erreur', detail: error.error.message as string });
+                } else if(error.status === 415) {
+                  messageService.add({ severity: 'error', summary: 'Erreur', detail: error.error.data as string });
+                } else if(error.status === 500) {
+                  messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Internal server error' });
+                }
+              }
+            })
+          )
+        })
+      )
+    ),
+
     deleteCategory: rxMethod<Category>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),

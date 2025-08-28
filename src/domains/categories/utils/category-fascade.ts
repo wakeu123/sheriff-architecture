@@ -21,6 +21,10 @@ export class CategoryFacade {
     return this.store.sortedCategories();
   }
 
+  getUnsupportedMethod(id: number): void {
+    this.store.getCategoryUnsuppoted(id);
+  }
+
   add(category: Partial<Category>): void {
     this.store.addCategory(category);
   }

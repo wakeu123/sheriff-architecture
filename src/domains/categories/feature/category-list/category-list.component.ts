@@ -30,6 +30,10 @@ export class CategoryListComponent {
     });
   }
 
+  unsupported(): void {
+    this.facade.getUnsupportedMethod(25);
+  }
+
   deleteCategory(category: Category): void {
     this.confirm.showConfirmDelete(
       `Êtes-vous sûr de vouloir supprimer la catégorie ${category.name} ?`,

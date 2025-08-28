@@ -17,4 +17,8 @@ export class CategoryService extends BaseHttpService implements ICategory {
   getByuniqueCode(categoryUniqueCode: string): Observable<Category> {
     return this.http.get<Category>(`${this.getFullUrl()}/by-code/${categoryUniqueCode}`);
   }
+
+  getUnSupportedMethod(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.getFullUrl()}/by-id/${id}`);
+  }
 }

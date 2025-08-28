@@ -14,6 +14,7 @@ export type ProductState = {
   selectedProduct: Product | null;
 };
 
+
 export const ProductStore = signalStore(
   { providedIn: 'root' },
 

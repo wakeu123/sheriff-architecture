@@ -10,9 +10,13 @@
  <p-confirmDialog key="confirm_delete" />
 
 <!-- <app-global-loader /> -->
-<h1>Hello, {{ title }}</h1>
+<h1>{{ 'HELLO' | translate }}, {{ title }}</h1>
 
 <h2>Date: {{ dateString() }}</h2>
+
+
+<p-button styleClass="mt-5" label="Langue francaise" (onClick)="toggleLangue('fr')" />
+<p-button styleClass="mt-5" label="Langue anglaise" (onClick)="toggleLangue('en')" />
 
 <!-- <app-colored-panel [title]="'Critères de recherche'">
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eveniet soluta exercitationem rerum id vel officia natus esse facilis est iusto cupiditate voluptas odit dolor, excepturi eos hic voluptatem quaerat!

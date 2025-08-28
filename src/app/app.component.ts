@@ -6,6 +6,7 @@ import { ValidationErrors } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { DatePipe } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 //import { GlobalLoaderComponent } from "../domains/shared/components/global-loader/global-loader.component";
 
 @Component({
@@ -13,18 +14,19 @@ import { DatePipe } from '@angular/common';
   imports: [
     ButtonModule, ToastModule,
     ConfirmDialogModule, RouterLink,
-    RouterOutlet
+    RouterOutlet, TranslatePipe, ButtonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
-    //{ provide: LOCALE_ID, useValue: 'fr-FR' }
+    //{ provide: LOCALE_ID, useValue: 'fr-FR' },
     CryptoService
   ]
 })
 export class AppComponent implements OnInit {
 
   private readonly cryptoService = inject(CryptoService);
+  private readonly translateService = inject(TranslateService);
 
   //pm i @ngspot/ngx-errors très important pour gérer les erreurs des formulaires
   dateString = signal('');
@@ -64,5 +66,10 @@ export class AppComponent implements OnInit {
 
   toggleDarkMode(ade: ValidationErrors) {
     console.log(ade);
+  }
+
+  toggleLangue(lang: string) {
+    console.log('Langue choisie: ', lang);
+    this.translateService.use(lang);
   }
 }
