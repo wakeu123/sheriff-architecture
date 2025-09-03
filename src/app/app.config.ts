@@ -1,6 +1,6 @@
 import { provideRouter } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -15,10 +15,11 @@ import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@ang
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from '@domains/shared/interceptors/interceptor-http';
 
-registerLocaleData(localeFr, 'fr-Fr');
+registerLocaleData(localeFr, 'en');
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: LOCALE_ID, useValue: 'en' },
     DialogService,
     MessageService,
     JwtHelperService,

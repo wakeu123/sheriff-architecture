@@ -10,7 +10,7 @@ import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { tapResponse } from '@ngrx/operators';
 import { MessageService } from "primeng/api";
 
-type CategoryState = {
+interface CategoryState {
   page: number;
   sortBy: string;
   pageSize: number;
@@ -34,7 +34,7 @@ const initialState: CategoryState = {
   pageSizes: [20, 50, 100, 500, 1000]
 };
 
-const CATEGORY_STATE = new InjectionToken<CategoryState>(
+export const CATEGORY_STATE = new InjectionToken<CategoryState>(
   'CategoryState',
   { factory: () => initialState }
 );
@@ -172,7 +172,7 @@ export const CategoriesListStore = signalStore(
                 patchState(store, { isLoading: false, selectedCategory: response });
               },
               error: (error: HttpErrorResponse) => {
-                console.log(error)
+                //console.log(error)
                 patchState(store, { isLoading: false });
                 if(error.status === 503) {
                   messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });

@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const date = new Date();
-    const formattedDate = new DatePipe('fr-FR').transform(date, 'dd/MM/yyyy');
+    const formattedDate = new DatePipe('en').transform(date, 'dd/MM/yyyy');
 
     if(formattedDate != null) {
       this.dateString.set(formattedDate);

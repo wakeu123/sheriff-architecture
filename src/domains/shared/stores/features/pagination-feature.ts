@@ -20,11 +20,12 @@ export interface PaginationState<T> {
   pageSize: number;
   totalItems: number;
   currentPage: number;
-  filters: Record<string, unknown>;
+  pageSizes: number[];
   sort: {
     field: string;
     direction: 'asc' | 'desc';
   };
+  filters: Record<string, unknown>;
 }
 
 export interface ApiService<T> {
@@ -50,6 +51,7 @@ export function withPagination<T, Service extends ApiService<T> = ApiService<T>>
         field: '',
         direction: 'asc'
       },
+      pageSizes: [20, 50, 100, 500, 1000]
     }),
 
     withLoading(),
