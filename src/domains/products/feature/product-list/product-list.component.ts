@@ -1,7 +1,5 @@
-import { setPending } from '@domains/shared/state';
-import { Order, Product, ProductRequest, ProductResponse } from './../../data/models/product.model';
+import { Product, ProductRequest, ProductResponse } from './../../data/models/product.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
-import { ProductService } from '@domains/products/data/services/product.service';
 import { ToastService } from '@domains/shared/services/toast/toast.service';
 import { ProductComponent } from '@domains/products/ui/product.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -15,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ProductStore } from '@domains/products/utils/product-store';
+import { ProductService } from '@domains/products/utils/product.service';
 
 export type Durum = ['flat bread', 'meat', 'sauce', 'tomato', 'cabbage'];
 
@@ -146,7 +145,7 @@ export class ProductListComponent implements OnInit{
 
   showNotification(): void {
     this.toastService.showSuccess('Je suis la notification', 'Notification');
-    console.log(this.productService.getFullUrl())
+    //console.log(this.productService.getFullUrl())
   }
 
   onShowModal(): void {
