@@ -1,6 +1,6 @@
 import { provideRouter } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, makeEnvironmentProviders, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -20,15 +20,13 @@ registerLocaleData(localeFr, 'en');
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: LOCALE_ID, useValue: 'en' },
-    DialogService,
-    MessageService,
-    JwtHelperService,
-    ConfirmationService,
-
+    providePrimeNg(),
+    provideLanguage(),
+    provideRouter(routes),
+    provideGlobalService(),
     provideHttpClient(
       withInterceptors([httpInterceptor])
     ),
-    provideRouter(routes),
     provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
@@ -36,6 +34,21 @@ export const appConfig: ApplicationConfig = {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
+    // importProvidersFrom([ToastModule]),
+  ],
+};
+
+export function provideGlobalService() {
+  return makeEnvironmentProviders([
+    DialogService,
+    MessageService,
+    JwtHelperService,
+    ConfirmationService,
+  ])
+}
+
+export function provideLanguage() {
+  return makeEnvironmentProviders([
     provideTranslateService({
       lang: 'en',
       fallbackLang: 'en',
@@ -43,8 +56,12 @@ export const appConfig: ApplicationConfig = {
         prefix: './i18n/',
         suffix: '.json'
       })
-    }),
-    // importProvidersFrom([ToastModule]),
+    })
+  ]);
+}
+
+export function providePrimeNg() {
+  return makeEnvironmentProviders([
     providePrimeNG({
       ripple: true,
       theme: {
@@ -56,5 +73,5 @@ export const appConfig: ApplicationConfig = {
         }
       }
     })
-  ],
-};
+  ]);
+}
