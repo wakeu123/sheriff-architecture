@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { Injectable } from "@angular/core";
 import { Log } from "@domains/shared/decorators/log.decoraor";
 import { HttpHeaders, HttpParams } from "@angular/common/http";
 import { Category } from "@domains/shared/models/category.model";
@@ -12,7 +12,10 @@ export interface ICategory extends IGet, ISearch, IPost, IDelete {}
 @Injectable({ providedIn: 'root' })
 export class CategoryService implements ICategory {
 
-  private httpHelper = new HttpHelper(environment.apiUrl as string, 'categories');
+  private readonly endpoint = 'categories';
+  private readonly baseUrl = environment.apiUrl as string;
+
+  private httpHelper = new HttpHelper(this.baseUrl, this.endpoint);
 
   search<T>(): Observable<T[]> {
     return this.httpHelper.search<T>();

@@ -3,7 +3,9 @@ import { inject } from "@angular/core";
 import { Observable } from "rxjs";
 
 // Classe utilitaire pour les opérations HTTP
+
 export class HttpHelper {
+
   readonly http = inject(HttpClient);
 
   constructor(private baseUrl: string, private endpoint: string) {}
