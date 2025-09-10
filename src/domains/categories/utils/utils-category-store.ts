@@ -1,14 +1,14 @@
 import { hideLoading, setError, setFulfilled, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
 import { catchError, exhaustMap, pipe, switchMap, tap, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { computed, inject, InjectionToken } from "@angular/core";
 import { Category } from "@domains/shared/models/category.model";
 import { OrderType } from "@domains/shared/models/order-type";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { CategoryService } from "./category-service";
 import { tapResponse } from '@ngrx/operators';
 import { MessageService } from "primeng/api";
-import { CategoryService } from "./category-service";
 
 interface CategoryState {
   page: number;
