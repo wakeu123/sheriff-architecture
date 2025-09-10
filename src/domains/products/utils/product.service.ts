@@ -3,24 +3,18 @@ import { IDelete, IGet, IPost, ISearch } from "@domains/shared/services/base/i-p
 import { ApiService, PaginationParams } from "@domains/shared/stores/features/pagination-feature";
 import { environment } from "src/environments/environment.development";
 import { HttpHeaders, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { PaginationResponse } from "@domains/shared/models/pagination-response.model";
 import { HttpHelper } from "@domains/shared/services/base/http-helpers";
 
 export interface IProduct extends ApiService<Product>, IGet, ISearch, IPost, IDelete {}
 
-//@Injectable({ providedIn: 'root' })
 export class ProductService implements IProduct {
 
-  private readonly endpoint = '/products';
-  private baseUrl = environment.apiUrl as string;
+  private readonly endpoint = 'products';
+  private readonly baseUrl = environment.apiUrl as string;
 
   private readonly httpHelper = new HttpHelper(this.baseUrl, this.endpoint);
-
-  private getFullUrl(): string {
-    return `${this.baseUrl}${this.endpoint}`;
-  }
 
   get<Product>(params?: HttpParams, headers?: HttpHeaders): Observable<Product> {
     return this.httpHelper.get<Product>(params, headers);
@@ -55,7 +49,7 @@ export class ProductService implements IProduct {
       httpParams = httpParams.set('sort', params.sort);
     }
 
-    return this.httpHelper.http.get<PaginationResponse<Product>>(this.getFullUrl(), { params: httpParams });
+    return this.httpHelper.http.get<PaginationResponse<Product>>(this.httpHelper.getFullUrl(), { params: httpParams });
   }
 
 }
