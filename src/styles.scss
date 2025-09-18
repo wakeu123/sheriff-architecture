@@ -131,6 +131,13 @@
     }
   }
 
+  textarea {
+    box-sizing: content-box;
+    resize: vertical;
+    max-height: 300px;
+    height: 6lh;
+  }
+
   [type="radio"],
   [type="checkbox"] {
     width: 1rem;
