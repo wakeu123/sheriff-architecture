@@ -1,0 +1,54 @@
+<section class="contact">
+  <form action="">
+    <input type="hidden" style="position: absolute; left: -9999;">
+
+    <!-- First Name Field -->
+    <div class="form-group">
+      <label for="fname">First Name</label>
+      <input type="text" pInputText id="fname" name="first_name" required>
+    </div>
+
+    <!-- Last Name Field -->
+    <div class="form-group">
+      <label for="lname">Last Name</label>
+      <input type="text" pInputText id="lname" name="last_name" required>
+    </div>
+
+    <!-- Email Address Field -->
+    <div class="form-group grid-span-2">
+      <label for="email">Email Address</label>
+      <input type="email" pInputText id="email" name="email_address" required>
+    </div>
+
+    <!-- Query Type Field -->
+    <fieldset class="grid-span-2">
+      <legend>Query Type</legend>
+
+      <!-- General Enquiry Field -->
+      <div class="form-group">
+        <input type="radio" pRadioButton id="general" name="query" required>
+        <label for="general">General Enquiry</label>
+      </div>
+
+      <!-- Support Request Field -->
+      <div class="form-group">
+        <input type="radio" pRadioButton id="support" name="query" required>
+        <label for="support">Support Request</label>
+      </div>
+    </fieldset>
+
+    <!-- Message Field -->
+    <div class="form-group grid-span-2">
+      <label for="message">Message</label>
+      <textarea name="message" pInputTextarea id="message" required></textarea>
+    </div>
+
+    <!-- Consent Field -->
+      <div class="form-group grid-span-2">
+        <input type="checkbox" pCheckBox id="consent" name="consent" required>
+        <label for="consent">I consent to being contacted by the team</label>
+      </div>
+
+      <button pButton type="submit" class="grid-span-2">Submit</button>
+  </form>
+</section>

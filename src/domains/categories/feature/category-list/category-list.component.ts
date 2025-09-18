@@ -6,6 +6,7 @@ import { Category } from '@domains/shared/models/category.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
 import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
+import { AddHobbiteComponent } from '../../../hobbite/ui-add-hobbite/ui-add-hobbite.component';
 
 @Component({
   selector: 'app-categories',
@@ -27,6 +28,15 @@ export class CategoryListComponent {
     this.dialogService.open(CategoryComponent, {
       header: 'Ajouter une categorie',
       width: '50%',
+      appendTo: 'body',
+      closable: true
+    });
+  }
+
+  openHobbiteDialog(): void {
+    this.dialogService.open(AddHobbiteComponent, {
+      header: 'Ajouter un loisir',
+      width: '700px',
       appendTo: 'body',
       closable: true
     });

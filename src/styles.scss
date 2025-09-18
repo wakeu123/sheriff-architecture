@@ -1,64 +1,148 @@
 /* You can add global styles to this file, and also import other style files */
 
-@use "tailwindcss";
-
-
-
-*{
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-}
-
-:root{
-  --primary-color: #fff
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
+//@use "tailwindcss";
 
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400 700;
   font-display: swap;
   src: url("/fonts/Montserrat/static/Montserrat-Regular.ttf") format('truetype');
 }
 
+// *{
+//   box-sizing: border-box;
+//   font-family: 'Montserrat', sans-serif;
+// }
+
+:root{
+  --pale-green: hsl(148, 38%, 91%);
+  --green: hsl(169, 82%, 27%);
+  --red: hsl(0, 66%, 54%);
+  --white: hsl(0, 0%, 100%);
+  --light-teal: hsl(186, 15%, 59%);
+  --dark-teal: hsl(187, 24%, 22%);
+
+  --ff-base: "Montserrat", monospace;
+}
+
+// body {
+//   margin: 0;
+//   padding: 0;
+// }
+
+
+
 // DIALOG STYLES
 
-.p-dialog{
-  border: 0 !important;
+// .p-dialog{
+//   border: 0 !important;
+// }
+
+// .p-icon{
+//   color: var(--primary-color) !important;
+// }
+
+// .p-button-text.p-button-secondary:not(:disabled):hover{
+//   color: var(--primary-color) !important;
+//   background-color: var(--p-primary-600) !important;
+// }
+
+// .p-icon:hover{
+//   color: var(--primary-color) !important;
+//   background-color: var(--primary-hover-color) !important;
+// }
+
+// .p-dialog-header{
+//   height: 1.5rem;
+//   margin-bottom: .5rem;
+//   color: var(--primary-color) !important;
+//   background-color: var(--p-primary-500) !important;
+//   border-top-left-radius: var(--p-dialog-border-radius);
+//   border-top-right-radius: var(--p-dialog-border-radius);
+// }
+
+// #footer-dialog-actions{
+//   position: static;
+//   padding-top: 1.2rem;
+//   border-top-style: solid !important;
+//   border-top-width: 0.1rem !important;
+//   border-top-color: black !important;
+// }
+
+// CUSTOM DIALOG
+
+.p-dialog .p-dialog-header {
+  background: linear-gradient(90deg, #ea8532 30%, #ea5b18 90%) !important;
+  //background: var(--p-primary-color) !important;
+  color: #ffffff !important;
+  padding: 0rem 0.5rem !important;
+  border-top-right-radius: 8px !important;
+  border-top-left-radius: 8px !important;
+  align-items: center !important;
+  box-shadow: 0px 1px 2px grey;
 }
 
-.p-icon{
-  color: var(--primary-color) !important;
+.p-dialog .p-dialog-header .p-dialog-close-button {
+  color: #ffffff !important;
 }
 
-.p-button-text.p-button-secondary:not(:disabled):hover{
-  color: var(--primary-color) !important;
-  background-color: var(--p-primary-600) !important;
+.p-dialog .p-dialog-header >* .p-button-text.p-button-secondary:not(:disabled):hover {
+  background: var(--p-primary-color) !important;
+  border: 1px solid var(--p-button-primary-hover-border-color) !important;
 }
 
-.p-icon:hover{
-  color: var(--primary-color) !important;
-  background-color: var(--primary-hover-color) !important;
-}
+@layer reset {
+  *,
+  ::before,
+  ::after {
+    //font-family: 'Courier New', Courier, monospace;
+    box-sizing: border-box;
+  }
 
-.p-dialog-header{
-  height: 1.5rem;
-  margin-bottom: .5rem;
-  color: var(--primary-color) !important;
-  background-color: var(--p-primary-500) !important;
-  border-top-left-radius: var(--p-dialog-border-radius);
-  border-top-right-radius: var(--p-dialog-border-radius);
-}
+  body {
+    accent-color: var(--green);
+    font-size: 1rem;
+    font-family: var(--ff-base);
+    line-height: 1.6;
+    background-color: var(--pale-green);
+  }
 
-#footer-dialog-actions{
-  position: static;
-  padding-top: 1.2rem;
-  border-top-style: solid !important;
-  border-top-width: 0.1rem !important;
-  border-top-color: black !important;
+  h1,
+  h2,
+  p {
+    margin-block: inherit;
+  }
+
+  .grid-span-2 {
+    grid-column: 1 / -1;
+  }
+
+  input,
+  button,
+  textarea {
+    font: inherit;
+  }
+
+  [type="radio"],
+  [type="checkbox"] {
+    width: 1rem;
+  }
+
+  form >* input, textarea {
+    //border: 1px solid var(--dark-teal) !important;
+    border-radius: 15px !important;
+    padding: 0.75em 1.5em !important;
+  }
+
+  fieldset:has([required]) legend,
+  .form-group:has(:not([type="radio"])[required]) label {
+    display: flex;
+    gap: .5ch;
+
+    &::after {
+      content: '*';
+      color: var(--red);
+    }
+  }
 }

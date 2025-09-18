@@ -13,7 +13,7 @@ export const MyPreset = definePreset(Aura, {
             300: '{orange.300}',
             400: '{orange.400}',
             //500: 'var(--p-gray-400)',
-            500: '{orange.500}',
+            500: '{orange.700}',
             600: '{orange.600}',
             700: '{orange.700}',
             800: '{orange.800}',
