@@ -47,6 +47,16 @@
       }
   }
 
+  .form-group:has([type="radio"]) {
+    position: relative;
+
+    label::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+  }
+
   .form-group:has([type="radio"]:checked) {
     background: var(--pale-green);
     border-color: var(--green) !important;
