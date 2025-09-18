@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CategoryComponent } from '@domains/categories/ui/category.component';
 import { CategoryFacade } from '@domains/categories/utils/category-fascade';
+import { CategoryService } from '@domains/categories/utils/category-service';
 import { Category } from '@domains/shared/models/category.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +20,7 @@ export class CategoryListComponent {
 
   readonly facade = inject(CategoryFacade);
   private readonly confirm = inject(ConfirmService);
+  private readonly service = inject(CategoryService);
   private readonly dialogService = inject(DialogService);
 
   openCategoryDialog(): void {
@@ -32,6 +34,13 @@ export class CategoryListComponent {
 
   unsupported(): void {
     this.facade.getUnsupportedMethod(25);
+  }
+
+  onSearchWithPagination(){
+    this.service.getAllWithPagination().subscribe(data => {
+      console.log("Items: ", data);
+    });
+
   }
 
   deleteCategory(category: Category): void {

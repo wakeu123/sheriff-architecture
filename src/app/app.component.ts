@@ -33,6 +33,11 @@ export class AppComponent implements OnInit {
   title = 'Sheriff architecture';
 
   ngOnInit(): void {
+    console.log("qw1 ", Math.random());
+    console.log("qw2 ", Math.floor(Math.random()));
+    console.log("2 ===> ", Math.floor(Math.random() * (2 + 1)))
+    console.log("1 ===> ", Math.floor(Math.random() * (1 + 1)));
+    console.log("0 ===> ", Math.floor(Math.random() * (0 + 1)));
     const date = new Date();
     const formattedDate = new DatePipe('en').transform(date, 'dd/MM/yyyy');
 
@@ -62,6 +67,7 @@ export class AppComponent implements OnInit {
     const enscryt = this.cryptoService.encrypt(name);
     console.log('CryptoKey 1: ', enscryt);
     console.log('CryptoKey 2: ', this.cryptoService.decrypt(enscryt));
+    console.log('Test: ', this.shuffleArray<string>(['a', 'b', 'c']));
   }
 
   toggleDarkMode(ade: ValidationErrors) {
@@ -71,5 +77,14 @@ export class AppComponent implements OnInit {
   toggleLangue(lang: string) {
     console.log('Langue choisie: ', lang);
     this.translateService.use(lang);
+  }
+
+  private shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 }

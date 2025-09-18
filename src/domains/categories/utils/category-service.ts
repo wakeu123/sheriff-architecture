@@ -41,4 +41,8 @@ export class CategoryService implements ICategory {
   getUnSupportedMethod(id: number): Observable<Category> {
     return this.httpHelper.http.get<Category>(`${this.httpHelper.getFullUrl()}/by-id/${id}`);
   }
+
+  getAllWithPagination(): Observable<Category[]> {
+    return this.httpHelper.http.get<any>(`${this.httpHelper.getFullUrl()}/with-pagination/${0}/${20}/${'id'}/${'asc'}`);
+  }
 }

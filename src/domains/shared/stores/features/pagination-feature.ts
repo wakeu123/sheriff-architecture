@@ -1,12 +1,13 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { computed, inject, Injector, Type } from "@angular/core";
-import { PaginationResponse } from "@domains/shared/models/pagination-response.model";
 import { hideLoading, setError, showLoading, withLoading, withRequestStatus } from "@domains/shared/state"
-import { tapResponse } from "@ngrx/operators";
 import { patchState, signalStoreFeature, withMethods, withState } from "@ngrx/signals";
-import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import { MessageService } from "primeng/api";
+import { PaginationResponse } from "@domains/shared/models/pagination-response.model";
 import { catchError, Observable, of, pipe, switchMap, tap } from "rxjs"
+import { computed, inject, Injector, Type } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { InjectionToken } from "@angular/core";
+import { tapResponse } from "@ngrx/operators";
+import { MessageService } from "primeng/api";
 
 export interface PaginationParams {
   page?: number;
@@ -32,7 +33,6 @@ export interface ApiService<T> {
   getAllWithPagination(params: PaginationParams): Observable<PaginationResponse<T>>;
 }
 
-import { InjectionToken } from "@angular/core";
 //export const API_SERVICE_TOKEN = Symbol('API_SERVICE_TOKEN');
 export const API_SERVICE_TOKEN = new InjectionToken<ApiService<unknown>>('API_SERVICE_TOKEN');
 

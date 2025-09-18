@@ -1,4 +1,4 @@
-export type ColumnFilter = {
+export interface ColumnFilter {
   type: string;
   value: unknown;
 }
