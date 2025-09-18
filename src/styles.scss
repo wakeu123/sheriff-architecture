@@ -122,6 +122,13 @@
   button,
   textarea {
     font: inherit;
+
+    &.ng-invalid.ng-touched {
+      border-left: 5px solid #f12828;
+      border-top: 1px solid #f12828;
+      border-right: 1px solid #f12828;
+      border-bottom: 1px solid #f12828;
+    }
   }
 
   [type="radio"],

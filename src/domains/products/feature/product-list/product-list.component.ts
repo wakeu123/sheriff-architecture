@@ -23,7 +23,7 @@ export type Durum = ['flat bread', 'meat', 'sauce', 'tomato', 'cabbage'];
   standalone: true,
   imports: [ NgIf, AsyncPipe, JsonPipe, ButtonModule, ToastModule, RouterOutlet],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css',
+  styleUrl: './product-list.component.scss',
   providers: [ProductService, DialogService, ProductStore],
 })
 export class ProductListComponent implements OnInit{

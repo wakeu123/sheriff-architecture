@@ -4,12 +4,172 @@
 </div> -->
 
 
-<div class="">
+<div class="container">
   <form [formGroup]="form">
-    <input type="text" class="hidden" style="position: absolute; left: -9999;" autofocus />
+    <input type="hidden" class="hidden" style="position: absolute; left: -9999;" autofocus />
 
     <app-colored-panel [title]="'Critère de recherche'">
-      <div class="form-container flex flex-row gap-3 w-full">
+      <div class="form-container">
+        <div class="div-row">
+          <div class="flex flex-row mb-3">
+              <div class="flex flex-row gap-3 w-full">
+                <label for="objet" class="w-64">Référence : </label>
+                <input
+                  pInputText
+                  placeholder="Référence"
+                  formControlName="reference"
+                  id="reference"
+                  name="reference"
+                  class="w-full"
+
+                />
+              </div>
+          </div>
+          <div class="flex flex-row mb-3">
+              <div class="flex flex-row gap-3 w-full">
+                <label for="objet" class="w-64">Objet : </label>
+                <input
+                  pInputText
+                  formControlName="objet"
+                  id="objet"
+                  name="objet"
+                  class="w-full"
+                />
+              </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+              <div class="flex flex-row gap-3 w-full">
+                <label for="utilisateurCreation" class="w-64">Créé par : </label>
+                <input
+                  pInputText
+                  formControlName="utilisateurCreation"
+                  id="utilisateurCreation"
+                  name="utilisateurCreation"
+                  class="w-full"
+                />
+              </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+              <div class="flex flex-row gap-3 w-full">
+                <label for="description" class="w-64">Description : </label>
+                <textarea rows="5" [autoResize]="true"
+                class="emphase w-full" cols="30" placeholder="Faites une description"
+                pTextarea formControlName="description"></textarea>
+              </div>
+            </div>
+        </div>
+
+        <div class="div-row">
+          <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="nature" class="w-64">Nature: </label>
+              <select
+                pInputText
+                formControlName="natureCourrier"
+                id="nature"
+                name="nature"
+                class="emphase w-full"
+              >
+                <option value="" selected>Aucune sélection</option>
+                <option value="NORMALE">NORMALE</option>
+                <option value="CONFIDENTIELLE">CONFIDENTIELLE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="priorite" class="w-64">Priorité: </label>
+              <select
+                pInputText
+                formControlName="prioriteCourrier"
+                id="priorite"
+                name="priorite"
+                class="emphase w-full"
+              >
+                <option value="" selected>Aucune sélection</option>
+                <option value="NORMALE" selected>NORMALE</option>
+                <option value="MOYENNE">MOYENNE</option>
+                <option value="URGENTE">URGENTE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="etat" class="w-64">Etat: </label>
+              <select
+                pInputText
+                formControlName="etatCourrier"
+                id="etat"
+                name="etat"
+                class="emphase w-full"
+              >
+                <option value="" selected>Aucune sélection</option>
+                <option value="BROUILLON">BROUILLON</option>
+                <option value="ENREGISTRE">ENREGISTRE</option>
+                <option value="DISTRIBUE">CLASSE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="etat" class="w-64">City: </label>
+              <p-select [options]="cities()"
+              formControlName="city"
+              appendTo="body"
+              optionLabel="name"
+              placeholder="Select a City"
+              class="emphase w-full" />
+            </div>
+          </div>
+
+          <!-- <div class="flex flex-row mb-3">
+            <div class="flex flex-row gap-2 w-full">
+              <label for="etat">Periode: </label>
+              <div class="date-box emphase w-full">
+                <div class="card flex flex-wrap gap-3 p-fluid">
+                  <div class="flex-auto">
+                    <label for="icondisplay" class="block mb-1">
+                      Date de début:
+                    </label>
+                    <p-calendar
+                      formControlName="dateDebut"
+                      [(ngModel)]="dateDebut"
+                      [iconDisplay]="'input'"
+                      [showIcon]="true"
+                      inputId="icondisplay"
+                      [appendTo]="'body'"
+                      [baseZIndex]="10000"
+                    />
+                  </div>
+                  <div class="flex-auto">
+                    <label for="icondisplay" class="block mb-1">
+                      Date de fin:
+                    </label>
+                    <p-calendar
+                      formControlName="dateFin"
+                      [(ngModel)]="datefin"
+                      [iconDisplay]="'input'"
+                      [showIcon]="true"
+                      inputId="icondisplay"
+                      [appendTo]="'body'"
+                      [baseZIndex]="10000"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </app-colored-panel>
+
+    <app-colored-panel [title]="'Critère de recherche'">
+      <div class="form-container">
         <div class="div-row">
           <div class="flex flex-row mb-3">
               <div class="flex flex-row gap-3 w-full">
