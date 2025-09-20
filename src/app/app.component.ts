@@ -1,4 +1,5 @@
 import { CryptoService } from '@domains/shared/services/crypto/crypto.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -6,7 +7,6 @@ import { ValidationErrors } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { DatePipe } from '@angular/common';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 //import { GlobalLoaderComponent } from "../domains/shared/components/global-loader/global-loader.component";
 
 @Component({
@@ -33,11 +33,6 @@ export class AppComponent implements OnInit {
   title = 'Sheriff architecture';
 
   ngOnInit(): void {
-    console.log("qw1 ", Math.random());
-    console.log("qw2 ", Math.floor(Math.random()));
-    console.log("2 ===> ", Math.floor(Math.random() * (2 + 1)))
-    console.log("1 ===> ", Math.floor(Math.random() * (1 + 1)));
-    console.log("0 ===> ", Math.floor(Math.random() * (0 + 1)));
     const date = new Date();
     const formattedDate = new DatePipe('en').transform(date, 'dd/MM/yyyy');
 
