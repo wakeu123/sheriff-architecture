@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { hasUnsavedChangesGuard } from '@domains/shared/guards/un-saved-change.guard';
+import { categoryResolve } from './core/resolvers/category.resolver';
 //import { hasUnsavedChangesGuard } from '@domains/shared/guards/un-saved-change.guard';
 
 export const routes: Routes = [
@@ -12,7 +13,10 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () =>
       import('../domains/categories/feature/category-list/category-list.component')
-        .then((c) => c.CategoryListComponent)
+        .then((c) => c.CategoryListComponent),
+    resolve: {
+      category: categoryResolve
+    }
   },
   {
     path: 'categories/edit/:unique-code',

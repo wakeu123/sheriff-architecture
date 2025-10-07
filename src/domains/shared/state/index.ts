@@ -51,6 +51,7 @@ export function setError(error: string): RequestStatusState {
 
 // Loader SignalStoreFeature
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type LoaderState = {
   isLoading: boolean;
 };

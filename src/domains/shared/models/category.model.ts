@@ -14,3 +14,8 @@ export type CategoryAddFormType = {
   name: FormControl<string>;
   description: FormControl<string>;
 };
+
+export interface CategoryAddModel {
+  name: string;
+  description: string;
+}

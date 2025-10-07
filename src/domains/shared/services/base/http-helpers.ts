@@ -26,7 +26,7 @@ export class HttpHelper {
     return this.http.post<T>(`${this.getFullUrl()}`, body, { headers });
   }
 
-  put<T>(body: unknown, headers?: HttpHeaders): Observable<T> {
+  put<T>(id: number | string, body: unknown, headers?: HttpHeaders): Observable<T> {
     return this.http.put<T>(`${this.getFullUrl()}`, body, { headers });
   }
 

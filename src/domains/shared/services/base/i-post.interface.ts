@@ -21,6 +21,6 @@ export interface IDelete {
   delete<T>(params: HttpParams, headers?: HttpHeaders): Observable<T>;
 }
 
-export interface Crud extends ISearch, IGet, IPost, IPut, IDelete {
+export interface Crud extends IPost, IPut, IDelete {
 
 }

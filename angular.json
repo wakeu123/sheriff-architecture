@@ -80,7 +80,10 @@
               "buildTarget": "sheriff-architecture:build:production"
             },
             "development": {
-              "buildTarget": "sheriff-architecture:build:development"
+              "buildTarget": "sheriff-architecture:build:development",
+              // "ssl": true,
+              // "sslKey": "ssl/private.key",
+              // "sslCert": "ssl/certificate.crt"
             }
           },
           "defaultConfiguration": "development"

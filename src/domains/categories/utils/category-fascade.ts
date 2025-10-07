@@ -8,13 +8,14 @@ export class CategoryFacade {
 
   private readonly store = inject(CategoriesListStore);
 
-  category$ = toObservable(this.store.newCategory);
+  category$ = toObservable(this.store.newItem);
 
   categories$ = toObservable(this.store.categories);
 
 
   categories = computed(() => {
-    return this.store.sortedCategories();
+    return this.store.categories();
+    //return this.store.sortedCategories();
   });
 
   getCategories(): Category[] {
@@ -26,7 +27,9 @@ export class CategoryFacade {
   }
 
   add(category: Partial<Category>): void {
-    this.store.addCategory(category);
+    //this.store.addCategory(category);//
+    this.store.addItem(category);
+    // this.store.newItem
   }
 
   resetNewCategory(): void {

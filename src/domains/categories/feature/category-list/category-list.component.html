@@ -1,9 +1,9 @@
 <p>Component categories list</p>
 <div class="card">
   <h5 class="card-title">Categories</h5>
-  <div class="card-body">
-    @for(category of facade.categories(); track category.id) {
-      <div class="card-text">
+  <div cdkDropList class="card-body">
+    @for(category of facade.categories(); track category) {
+      <div class="card-text" cdkDrag>
         <p>{{ category.name }}</p>
         <p>{{ category.description }}</p>
         <div class="actions">
@@ -13,7 +13,7 @@
     }
   </div>
 
-<div class="d-flex gap-5">
+<div class="d-flex gap-5 space">
   <p-button label="Unsupported method" (onClick)="unsupported()" />
   <p-button label="Ajouter un loisir" (onClick)="openHobbiteDialog()" />
   <p-button label="Search with pagination" (onClick)="onSearchWithPagination()" />

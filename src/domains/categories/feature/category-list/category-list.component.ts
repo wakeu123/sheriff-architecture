@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CategoryComponent } from '@domains/categories/ui/category.component';
 import { CategoryFacade } from '@domains/categories/utils/category-fascade';
-import { CategoryService } from '@domains/categories/utils/category-service';
 import { Category } from '@domains/shared/models/category.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
 import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddHobbiteComponent } from '../../../hobbite/ui-add-hobbite/ui-add-hobbite.component';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CategoryGateway } from '@domains/categories/utils/gategory-gateway';
 
 @Component({
   selector: 'app-categories',
@@ -14,15 +15,20 @@ import { AddHobbiteComponent } from '../../../hobbite/ui-add-hobbite/ui-add-hobb
   imports: [ButtonModule],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
-  providers: [CategoryFacade],
+  providers: [CategoryFacade, CdkDrag, CdkDropList, DragDropModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryListComponent {
 
   readonly facade = inject(CategoryFacade);
   private readonly confirm = inject(ConfirmService);
-  private readonly service = inject(CategoryService);
+  private readonly service = inject(CategoryGateway);
   private readonly dialogService = inject(DialogService);
+
+  drop(event: CdkDragDrop<Category[]>) {
+    console.log('========>', event);
+    moveItemInArray(this.facade.categories(), event.previousIndex, event.currentIndex);
+  }
 
   openCategoryDialog(): void {
     this.dialogService.open(CategoryComponent, {
@@ -67,3 +73,4 @@ export class CategoryListComponent {
     );
   }
 }
+

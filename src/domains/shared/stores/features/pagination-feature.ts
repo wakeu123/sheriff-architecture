@@ -1,3 +1,4 @@
+// eslint-disable-next-line @softarc/sheriff/dependency-rule
 import { hideLoading, setError, showLoading, withLoading, withRequestStatus } from "@domains/shared/state"
 import { patchState, signalStoreFeature, withMethods, withState } from "@ngrx/signals";
 import { PaginationResponse } from "@domains/shared/models/pagination-response.model";

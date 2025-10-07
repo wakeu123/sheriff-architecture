@@ -14,6 +14,9 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from '@domains/shared/interceptors/interceptor-http';
+import { CATEGORY_GATEWAY, CategoryGateway } from '@domains/categories/utils/gategory-gateway';
+import { HttpCategoryService } from '@domains/categories/utils/http-category-service';
+import { securityHeaderInterceptor } from './security-header.interceptor';
 
 registerLocaleData(localeFr, 'en');
 
@@ -25,7 +28,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideGlobalService(),
     provideHttpClient(
-      withInterceptors([httpInterceptor])
+      withInterceptors([
+        httpInterceptor,
+        securityHeaderInterceptor
+      ])
     ),
     provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -44,6 +50,8 @@ export function provideGlobalService() {
     MessageService,
     JwtHelperService,
     ConfirmationService,
+    { provide: CategoryGateway, useFactory: () => new HttpCategoryService },
+    { provide: CATEGORY_GATEWAY, useFactory: () => new HttpCategoryService }
   ])
 }
 

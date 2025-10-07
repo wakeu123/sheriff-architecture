@@ -1,4 +1,4 @@
-import { hideLoading, setError, setFulfilled, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
+import { hideLoading, setError, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
 import { catchError, exhaustMap, pipe, switchMap, tap, throwError } from 'rxjs';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
@@ -6,18 +6,18 @@ import { computed, inject, InjectionToken } from "@angular/core";
 import { Category } from "@domains/shared/models/category.model";
 import { OrderType } from "@domains/shared/models/order-type";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { CategoryService } from "./category-service";
 import { tapResponse } from '@ngrx/operators';
 import { MessageService } from "primeng/api";
+import { CATEGORY_GATEWAY, CategoryGateway } from "./gategory-gateway";
+import { resetAddedItem, withCreateOperationFeature } from "@domains/shared/stores/features/create-feature";
 
-interface CategoryState {
+interface CategoryState{
   page: number;
   sortBy: string;
   pageSize: number;
   pageSizes: number[];
   sortOrder: OrderType;
   categories: Category[];
-  newCategory: Category | null;
   selectedCategory: Nullable<Category>;
   filter: { query: string, order: OrderType };
 }
@@ -28,7 +28,6 @@ const initialState: CategoryState = {
   pageSize: 20,
   categories: [],
   sortOrder: 'desc',
-  newCategory: null,
   selectedCategory: null,
   filter: { query: '', order: 'asc' },
   pageSizes: [20, 50, 100, 500, 1000]
@@ -55,7 +54,8 @@ export const CategoriesListStore = signalStore(
       direction * a.name.localeCompare(b.name));
     }),
   })),
-  withMethods((store, categoryService = inject(CategoryService), messageService = inject(MessageService)) => ({
+  withCreateOperationFeature<Category>(CATEGORY_GATEWAY),
+  withMethods((store, categoryService = inject(CategoryGateway), messageService = inject(MessageService)) => ({
 
     setPage(page: number): void {
       patchState(store, { page });
@@ -78,7 +78,7 @@ export const CategoriesListStore = signalStore(
     },
 
     resetNewCategory(): void {
-      patchState(store, { newCategory: null })
+      patchState(store, resetAddedItem())
     },
 
     updateOrder(order: OrderType): void {
@@ -110,44 +110,44 @@ export const CategoriesListStore = signalStore(
       ),
     ),
 
-    addCategory: rxMethod<Partial<Category>>(
-      pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        exhaustMap((category) => {
-          return categoryService.post<Category>(category).pipe(
-            tapResponse({
-              next: (response) => {
-                patchState(store, { newCategory: response }, setFulfilled());
-                messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} ajoute avec succès.` });
-              },
-              error: (error: HttpErrorResponse) => {
-                console.error('Error added category:', error);
-                patchState(store, setError(error.message))
-                messageService.add({ severity: 'error', summary: 'Erreur', detail: `Échec de l'ajout de la categorie ${category.name}` });
-              }
-            }),
-            switchMap(() => {
-              return categoryService.search<Category>().pipe(
-                tap((categories: Category[]) => {
-                  patchState(store, { categories });
-                }),
-              )
-            }),
-            catchError((error) => {
-              console.error('Error fetching categories after addition:', error);
-              patchState(store, { isLoading: false });
-              return throwError(() => error);
-            })
-          );
-        })
-      )
-    ),
+    // addCategory: rxMethod<Partial<Category>>(
+    //   pipe(
+    //     tap(() => patchState(store, { isLoading: true })),
+    //     exhaustMap((category) => {
+    //       return categoryService.post<Category>(category).pipe(
+    //         tapResponse({
+    //           next: (response) => {
+    //             patchState(store, { newCategory: response }, setFulfilled());
+    //             messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} ajoute avec succès.` });
+    //           },
+    //           error: (error: HttpErrorResponse) => {
+    //             console.error('Error added category:', error);
+    //             patchState(store, setError(error.message))
+    //             messageService.add({ severity: 'error', summary: 'Erreur', detail: `Échec de l'ajout de la categorie ${category.name}` });
+    //           }
+    //         }),
+    //         switchMap(() => {
+    //           return categoryService.search<Category>().pipe(
+    //             tap((categories: Category[]) => {
+    //               patchState(store, { categories });
+    //             }),
+    //           )
+    //         }),
+    //         catchError((error) => {
+    //           console.error('Error fetching categories after addition:', error);
+    //           patchState(store, { isLoading: false });
+    //           return throwError(() => error);
+    //         })
+    //       );
+    //     })
+    //   )
+    // ),
 
     getCategory: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
         switchMap((uniqueCode) => {
-          return categoryService.getByuniqueCode(uniqueCode).pipe(
+          return categoryService.getByUniqueCode(uniqueCode).pipe(
             tapResponse({
               next: (response) => {
                 patchState(store, { isLoading: false, selectedCategory: response });
@@ -190,40 +190,85 @@ export const CategoriesListStore = signalStore(
       )
     ),
 
-    deleteCategory: rxMethod<Category>(
-      pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        exhaustMap((category) => {
-          return categoryService.delete<void>(new HttpParams().set('uniqueCode', category.uniqueCode.toString())).pipe(
-            tapResponse({
-              next: () => {
-                messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} supprimé avec succès.` });
-              },
-              error: (error: HttpErrorResponse) => {
-                if(error.status === 503) {
-                  messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });
-                } else if(error.status === 404) {
-                  messageService.add({ severity: 'error', summary: 'Erreur', detail: error.error.message as string });
-                } else if(error.status === 500) {
-                  messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Internal server error' });
-                }
-              }
-            }),
-            switchMap(() => {
-              return categoryService.search<Category>().pipe(
-                tap((categories: Category[]) => {
-                  patchState(store, { categories, isLoading: false });
+    // deleteCategory: rxMethod<Category>(
+    //   pipe(
+    //     tap(() => patchState(store, { isLoading: true })),
+    //     exhaustMap((category) => {
+    //       return categoryService.delete<string>(new HttpParams().set('uniqueCode', category.uniqueCode.toString())).pipe(
+    //         tapResponse({
+    //           next: (response) => {
+    //             console.log('Category deleted successfully:', response);
+    //             messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} supprimé avec succès.` });
+    //           },
+    //           error: (error: HttpErrorResponse) => {
+    //             if(error.status === 503) {
+    //               messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de joindre le serveur.' });
+    //             } else if(error.status === 404) {
+    //               messageService.add({ severity: 'error', summary: 'Erreur', detail: error.error.message as string });
+    //             } else if(error.status === 500) {
+    //               messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Internal server error' });
+    //             }
+    //           }
+    //         }),
+    //         switchMap(() =>
+    //           categoryService.search<Category>().pipe(
+    //             tapResponse({
+    //               next: (categories: Category[]) => {
+    //                 patchState(store, { categories, isLoading: false });
+    //               },
+    //               error: () => {
+    //                 patchState(store, { isLoading: false });
+    //                 messageService.add({
+    //                   severity: 'error',
+    //                   summary: 'Erreur',
+    //                   detail: 'Erreur lors du rechargement des catégories.'
+    //                 });
+    //               }
+    //         })
+    //       )),
+    //         catchError((error) => {
+    //           patchState(store, { isLoading: false });
+    //           return throwError(() => error);
+    //         })
+    //       );
+    //     })
+    //   )
+    // )
+
+        deleteCategory: rxMethod<Category>(
+          pipe(
+            tap(() => patchState(store, { isLoading: true })),
+            exhaustMap((category) => {
+              return categoryService.delete<Map<string, string>>(new HttpParams().set('uniqueCode', category.uniqueCode.toString())).pipe(
+                tapResponse({
+                  next: (response) => {
+                    console.log(Object.values(response)[0]);
+                    messageService.add({ severity: 'success', summary: 'Succès', detail: `${category.name} supprimé avec succès.` });
+                  },
+                  error: (error: HttpErrorResponse) => {
+                    console.error('Error deleted category:', error);
+                    patchState(store, setError(error.message))
+                    messageService.add({ severity: 'error', summary: 'Erreur', detail: `Échec de la suppression de la categorie ${category.name}` });
+                  }
                 }),
-              )
-            }),
-            catchError((error) => {
-              patchState(store, { isLoading: false });
-              return throwError(() => error);
+                switchMap(() => {
+                  return categoryService.search<Category>().pipe(
+                    tap((categories: Category[]) => {
+                      patchState(store, { categories });
+                    }),
+                  )
+                }),
+                catchError((error) => {
+                  console.error('Error fetching categories after addition:', error);
+                  patchState(store, { isLoading: false });
+                  return throwError(() => error);
+                })
+              );
             })
-          );
-        })
-      )
-    )
+          )
+        ),
+
+
   })),
   withHooks({
     onInit(store) {

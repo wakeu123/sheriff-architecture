@@ -1,5 +1,5 @@
 import { CryptoService } from '@domains/shared/services/crypto/crypto.service';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -14,12 +14,11 @@ import { DatePipe } from '@angular/common';
   imports: [
     ButtonModule, ToastModule,
     ConfirmDialogModule, RouterLink,
-    RouterOutlet, TranslatePipe, ButtonModule
+    RouterOutlet, TranslateModule, ButtonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
-    //{ provide: LOCALE_ID, useValue: 'fr-FR' },
     CryptoService
   ]
 })
@@ -63,6 +62,7 @@ export class AppComponent implements OnInit {
     console.log('CryptoKey 1: ', enscryt);
     console.log('CryptoKey 2: ', this.cryptoService.decrypt(enscryt));
     console.log('Test: ', this.shuffleArray<string>(['a', 'b', 'c']));
+
   }
 
   toggleDarkMode(ade: ValidationErrors) {
