@@ -1,7 +1,8 @@
 <p>Component categories list</p>
 <div class="card">
   <h5 class="card-title">Categories</h5>
-  <div cdkDropList class="card-body">
+  @if(facade.categories().length > 0){
+    <div cdkDropList class="card-body">
     @for(category of facade.categories(); track category) {
       <div class="card-text" cdkDrag>
         <p>{{ category.name }}</p>
@@ -12,6 +13,7 @@
       </div>
     }
   </div>
+  }
 
 <div class="d-flex gap-5 space">
   <p-button label="Unsupported method" (onClick)="unsupported()" />

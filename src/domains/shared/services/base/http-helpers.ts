@@ -26,11 +26,15 @@ export class HttpHelper {
     return this.http.post<T>(`${this.getFullUrl()}`, body, { headers });
   }
 
+  delete<T>(params: HttpParams, headers?: HttpHeaders): Observable<T> {
+    return this.http.delete<T>(`${this.getFullUrl()}`, { params, headers });
+  }
+
   put<T>(id: number | string, body: unknown, headers?: HttpHeaders): Observable<T> {
     return this.http.put<T>(`${this.getFullUrl()}`, body, { headers });
   }
 
-  delete<T>(params: HttpParams, headers?: HttpHeaders): Observable<T> {
-    return this.http.delete<T>(`${this.getFullUrl()}`, { params, headers });
+  patch<T>(id: number | string, body: unknown, headers?: HttpHeaders): Observable<T> {
+    return this.http.patch<T>(`${this.getFullUrl()}`, body, { headers });
   }
 }

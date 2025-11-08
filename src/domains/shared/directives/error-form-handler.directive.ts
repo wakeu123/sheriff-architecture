@@ -1,10 +1,9 @@
-import { errorMesages } from './../utils/errors-messages';
 import { merge, tap } from 'rxjs';
 import { Nullable } from 'primeng/ts-helpers';
+import { errorMesages } from '../utils/errors-messages';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormGroupDirective, ValidationErrors } from '@angular/forms';
 import { AfterViewInit, DestroyRef, Directive, ElementRef, inject, input, Renderer2, signal } from '@angular/core';
-import { errorMesages } from '../utils/errors-messages';
 
 @Directive({
   selector: '[appErrorFormHandler]',
@@ -38,7 +37,7 @@ export class ErrorFormHandlerDirective implements AfterViewInit {
     // Création d'un conteneur pour les messages d'erreur
     this.createErrorContainer();
 
-    this.renderer.addClass(this.elementRef.nativeElement, this.ERROR_CLASS);
+    //this.renderer.addClass(this.elementRef.nativeElement, this.ERROR_CLASS);
     this.formControl.set(this.formGroupDirective.form.get(this.fieldName()));
 
     if (!this.formControl()) {
