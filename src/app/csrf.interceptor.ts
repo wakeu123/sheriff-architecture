@@ -6,7 +6,7 @@ import { HttpClient, HttpInterceptorFn, HttpRequest } from '@angular/common/http
 export const csrfInterceptor: HttpInterceptorFn = (req, next) => {
   let csrfToken: Nullable<string> = null;
 
-  // Ne pas ajouter le token CSRF pour les requêtes GET/HEAD/OPTIONS
+  // Ne pas ajouter le token CSRF pour les requêtes HEAD/OPTIONS
     if (['HEAD', 'OPTIONS'].includes(req.method)) {
       return next(req);
     }

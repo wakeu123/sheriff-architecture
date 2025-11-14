@@ -1,5 +1,5 @@
 import { hideLoading, setError, setPending, showLoading, withLoading, withRequestStatus } from "@domains/shared/state";
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
+import { patchState, signalMethod, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
 import { catchError, exhaustMap, pipe, switchMap, tap, throwError } from 'rxjs';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { computed, inject, InjectionToken } from "@angular/core";
@@ -16,6 +16,7 @@ interface CategoryState{
   sortBy: string;
   pageSize: number;
   pageSizes: number[];
+  category: string;
   sortOrder: OrderType;
   categories: Category[];
   selectedCategory: Nullable<Category>;
@@ -26,6 +27,7 @@ const initialState: CategoryState = {
   page: 1,
   sortBy: '',
   pageSize: 20,
+  category: 'all',
   categories: [],
   sortOrder: 'desc',
   selectedCategory: null,
@@ -56,6 +58,23 @@ export const CategoriesListStore = signalStore(
   })),
   withCreateOperationFeature<Category>(CATEGORY_GATEWAY),
   withMethods((store, categoryService = inject(CategoryGateway), messageService = inject(MessageService)) => ({
+
+    setCategory: signalMethod<string>((category: string) => {
+      patchState(store, { category })
+    }),
+
+    clearCategories: () => {
+      const login = new URLSearchParams();
+      login.set('client_id', 'value');
+      login.set('', '');
+
+      patchState(store, { categories: [] })
+    },
+
+    // addToCard: (category: Category, quantity = 1) => {
+    //   const index = store.categories()?.findIndex(i => i.id === category.id);
+    //   const updatedCategory = produce()
+    // },
 
     setPage(page: number): void {
       patchState(store, { page });
