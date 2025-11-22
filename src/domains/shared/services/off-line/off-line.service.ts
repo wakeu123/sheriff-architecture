@@ -23,7 +23,6 @@ export class OffLineService {
       ).subscribe(online => {
         this.ngZone.run(() => {
           this.isOnLine$.next(online);
-          console.log(online ? '🌐 En ligne' : '📴 Hors ligne');
         })
       })
     });
