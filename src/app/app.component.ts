@@ -7,6 +7,8 @@ import { ValidationErrors } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { DatePipe } from '@angular/common';
+import { OffLineService } from '@domains/shared/services/off-line/off-line.service';
+import { MessageService } from 'primeng/api';
 //import { GlobalLoaderComponent } from "../domains/shared/components/global-loader/global-loader.component";
 
 @Component({
@@ -19,12 +21,15 @@ import { DatePipe } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
-    CryptoService
+    CryptoService,
+    MessageService
   ]
 })
 export class AppComponent implements OnInit {
 
+  private readonly messageService = inject(MessageService);
   private readonly cryptoService = inject(CryptoService);
+  private readonly offLineService = inject(OffLineService);
   private readonly translateService = inject(TranslateService);
 
   //pm i @ngspot/ngx-errors très important pour gérer les erreurs des formulaires
@@ -32,6 +37,11 @@ export class AppComponent implements OnInit {
   title = 'Sheriff architecture';
 
   ngOnInit(): void {
+    this.offLineService.initialize();
+    this.offLineService.online$.subscribe(online => {
+      this.messageService.add({severity:'info', summary: 'Connexion', detail: online ? '🌐 En ligne' : '📴 Hors ligne', key: 'online'});
+    });
+
     const date = new Date();
     const formattedDate = new DatePipe('en').transform(date, 'dd/MM/yyyy');
 

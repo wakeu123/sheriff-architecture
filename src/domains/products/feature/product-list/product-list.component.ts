@@ -1,6 +1,5 @@
 import { Product, ProductRequest, ProductResponse } from './../../data/models/product.model';
 import { ConfirmService } from '@domains/shared/services/confirm/confirm.service';
-import { ToastService } from '@domains/shared/services/toast/toast.service';
 import { ProductComponent } from '@domains/products/ui/product.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SafeStack } from '@domains/shared/utils/safe-stack';
@@ -32,10 +31,8 @@ export class ProductListComponent implements OnInit{
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly confirm = inject(ConfirmService);
-  private readonly toastService = inject(ToastService);
   private readonly dialogService = inject(DialogService);
   private readonly messageService = inject(MessageService);
-  private readonly productService = inject(ProductService);
 
   stacks = new SafeStack();
 
@@ -144,8 +141,9 @@ export class ProductListComponent implements OnInit{
   }
 
   showNotification(): void {
-    this.toastService.showSuccess('Je suis la notification', 'Notification');
-    //console.log(this.productService.getFullUrl())
+    //this.toastService.showSuccess('Je suis la notification', 'Notification');
+    this.messageService.add({ severity: 'success', summary: 'Notification', detail: 'Je suis la notification' });
+    console.log('Notification shown');
   }
 
   onShowModal(): void {
