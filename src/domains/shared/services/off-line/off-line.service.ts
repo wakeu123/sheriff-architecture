@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from "@angular/common";
 import { inject, Injectable, NgZone, PLATFORM_ID } from "@angular/core";
-import { BehaviorSubject, fromEvent, map, merge } from "rxjs";
+import { BehaviorSubject, filter, fromEvent, map, merge, Observable, of, take } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class OffLineService {
@@ -11,7 +11,6 @@ export class OffLineService {
   readonly online$ = this.isOnLine$.asObservable();
 
   initialize(): void {
-    console.log('is browser', this.isBrowser);
     if(!this.isBrowser) return;
 
     this.isOnLine$.next(navigator.onLine);
@@ -32,16 +31,13 @@ export class OffLineService {
     return this.isOnLine$.getValue();
   }
 
-  async waitForOnline(): Promise<void> {
-    if(this.isOnline) return;
+  waitForOnline$(): Observable<void> {
+    if(this.isOnline) return of(void 0);
 
-    return new Promise<void>(resolve => {
-      const subscription = this.online$.subscribe(online => {
-        if(online) {
-          subscription.unsubscribe();
-          resolve();
-        }
-      });
-    });
+    return this.online$.pipe(
+      filter(online => online),
+      take(1),
+      map(() => void 0)
+    );
   }
 }

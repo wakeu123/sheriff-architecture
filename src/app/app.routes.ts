@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RedirectFunction, Routes } from '@angular/router';
 import { hasUnsavedChangesGuard } from '@domains/shared/guards/un-saved-change.guard';
 import { categoryResolve } from './core/resolvers/category.resolver';
 //import { hasUnsavedChangesGuard } from '@domains/shared/guards/un-saved-change.guard';
@@ -29,3 +29,9 @@ export const routes: Routes = [
         .then((c) => c.ProductListComponent)
   },
 ];
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const redirectToTeamPAge: RedirectFunction = ({ params }) => {
+  const { id } = params;
+  return `/teams/${id}`;
+};

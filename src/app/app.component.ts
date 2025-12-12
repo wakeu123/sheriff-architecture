@@ -27,8 +27,8 @@ import { MessageService } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
 
-  private readonly messageService = inject(MessageService);
   private readonly cryptoService = inject(CryptoService);
+  private readonly messageService = inject(MessageService);
   private readonly offLineService = inject(OffLineService);
   private readonly translateService = inject(TranslateService);
 
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   title = 'Sheriff architecture';
 
   ngOnInit(): void {
+
     this.offLineService.initialize();
     this.offLineService.online$.subscribe(online => {
       this.messageService.add({severity:'info', summary: 'Connexion', detail: online ? '🌐 En ligne' : '📴 Hors ligne', key: 'online'});
